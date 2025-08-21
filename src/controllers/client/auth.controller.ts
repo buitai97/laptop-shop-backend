@@ -1,0 +1,36 @@
+import { Request, Response } from "express"
+import { registerNewUser } from "src/services/client/auth.service"
+import { RegisterSchema, TRegisterSchema } from "src/validation/register.schema"
+
+
+const getRegisterPage = async (req: Request, res: Response) => {
+    const errors = []
+    return res.render("client/auth/register.ejs", { errors })
+}
+
+const getLoginPage = async (req: Request, res: Response) => {
+    return res.render("client/auth/login.ejs")
+}
+
+const postRegister = async (req: Request, res: Response) => {
+    const { name, username, password, email, confirmPassword } = req.body as TRegisterSchema
+    const validate = await RegisterSchema.safeParseAsync(req.body)
+    if (!validate.success) {
+        const errorsZod = validate.error.issues
+        const errors = errorsZod?.map((error) => `${error.message} (${error.path[0]})`)
+        const oldData = {
+            name, password, email, confirmPassword
+        }
+        return res.render("client/auth/register.ejs", {
+            errors, oldData
+        })
+    }
+    await registerNewUser(name, email, password, username)
+    return res.redirect("/login")
+}
+
+const postLogin = async (req: Request, res: Response) => {
+    res.redirect("/")
+}
+
+export { getRegisterPage, getLoginPage, postLogin, postRegister }
