@@ -16,5 +16,4 @@ const registerNewUser = async (name: string, username: string, email: string, pa
     await prisma.user.create({ data: { accountType: ACCOUNT_TYPE.SYSTEM, email, name, username, password: hashedPassword, roleId: 1 } })
 
 }
-
 export { isEmailExist, registerNewUser }

@@ -9,7 +9,9 @@ const getRegisterPage = async (req: Request, res: Response) => {
 }
 
 const getLoginPage = async (req: Request, res: Response) => {
-    return res.render("client/auth/login.ejs")
+    const session = req.session as any
+    const messages = session?.messages ?? []
+    return res.render("client/auth/login.ejs", { messages })
 }
 
 const postRegister = async (req: Request, res: Response) => {
