@@ -4,9 +4,8 @@ import { getProducts } from "src/services/client/item.service";
 
 
 const getHomePage = async (req: Request, res: Response) => {
-    const user = req.user;
+    console.log(req.user)
     const products = await getProducts()
-    console.log(user)
     return res.render('client/home/show.ejs', { products })
 }
 

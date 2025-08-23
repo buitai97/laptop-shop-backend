@@ -3,8 +3,9 @@ import { postDeleteUser, getHomePage, postCreateUser, getUserDetail, postUpdateU
 import { getAdminCreateUserPage, getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashBoard } from "src/controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
 import { getAdminCreateProductPage, getProductDetailPage, getProductPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct } from "src/controllers/client/product.controller";
-import { getLoginPage, getRegisterPage, postLogin, postRegister } from "src/controllers/client/auth.controller";
+import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postRegister } from "src/controllers/client/auth.controller";
 import passport from "passport";
+import { isLoggedIn, logOut } from "src/middleware/auth";
 
 const router = express.Router()
 
@@ -12,14 +13,16 @@ const webRoutes = (app: Express) => {
     //client routes
     router.get('/', getHomePage)
     router.get("/product/:id", getProductPage)
+    router.get("/success-redirect", getSuccessRedirectPage)
     router.get("/register", getRegisterPage)
-    router.get("/login", getLoginPage)
+    router.get("/login", isLoggedIn, getLoginPage)
     router.post("/register", postRegister)
     router.post("/login", passport.authenticate('local', {
-        successRedirect: '/',
+        successRedirect: '/success-redirect',
         failureRedirect: '/login',
         failureMessage: true
     }))
+    app.post('/logout', logOut);
 
 
     //admin routes

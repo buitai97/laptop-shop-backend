@@ -72,6 +72,21 @@ const getUserById = async (id: string) => {
     return user
 }
 
+const getUserByIdWithRole = async (id: string) => {
+    const userWithRole = await prisma.user.findUnique({
+        where: {
+            id: +id
+        },
+        include: {
+            role: true
+        },
+        omit: {
+            password: true
+        }
+    })
+    return userWithRole
+}
+
 const handleGetRoleDetail = async (roleId: string) => {
     const result = await prisma.role.findUnique({
         where: {
@@ -88,5 +103,5 @@ const handleGetRoles = async () => {
 export {
     handleCreateUser, handleGetRoleDetail, getAllUsers, handleUpdateUser,
     handleDeleteUser, getUserById, hashPassword, handleGetRoles,
-    comparePassword
+    comparePassword, getUserByIdWithRole
 }
