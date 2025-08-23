@@ -61,3 +61,12 @@ model Product {
 
   @@map("products")
 }
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.MediumText
+  expiresAt DateTime
+  
+  @@map("sessions")
+}

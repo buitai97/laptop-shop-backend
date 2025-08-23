@@ -63,18 +63,13 @@ const handleUpdateUser = async (
     return updatedUser
 }
 
-const handleGetUserDetail = async (id: string) => {
-    const connection = await getConnection()
-
-    try {
-        const query = 'SELECT * FROM `users` WHERE id=?'
-        const [results, fields] = await connection.execute(query, id)
-        return results[0];
-    }
-    catch (err) {
-        console.log(err)
-        return []
-    }
+const getUserById = async (id: string) => {
+    const user = prisma.user.findUnique({
+        where: {
+            id: +id
+        }
+    })
+    return user
 }
 
 const handleGetRoleDetail = async (roleId: string) => {
@@ -92,6 +87,6 @@ const handleGetRoles = async () => {
 }
 export {
     handleCreateUser, handleGetRoleDetail, getAllUsers, handleUpdateUser,
-    handleDeleteUser, handleGetUserDetail, hashPassword, handleGetRoles,
+    handleDeleteUser, getUserById, hashPassword, handleGetRoles,
     comparePassword
 }
