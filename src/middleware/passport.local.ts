@@ -18,7 +18,7 @@ const configPassportLocal = () => {
         if (!isMatch) {
             return callback(null, false, { message: `Username or password is not valid.` });
         }
-        return callback(null, user)
+        return callback(null, user as any)
     }));
 
     passport.serializeUser(async (user: any, cb) => {

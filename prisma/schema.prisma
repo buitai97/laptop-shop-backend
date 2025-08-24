@@ -70,3 +70,14 @@ model Session {
   
   @@map("sessions")
 }
+
+model Cart {
+  id String @id
+  user_id String 
+  sum String 
+}
+
+model CartDetail {
+  id String @id
+  
+}

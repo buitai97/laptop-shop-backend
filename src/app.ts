@@ -1,3 +1,4 @@
+/// <reference path="./types/index.d.ts"/>
 import 'dotenv/config'
 import express from "express";
 import webRoutes from 'routes/web';
@@ -7,6 +8,7 @@ import configPassportLocal from './middleware/passport.local';
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { PrismaClient } from '@prisma/client';
+
 
 
 const app = express();
@@ -58,7 +60,7 @@ webRoutes(app)
 initDatabase()
 
 app.use((req, res) => {
-    res.send("404 not found")
+    res.render("status/404.ejs")
 })
 
 

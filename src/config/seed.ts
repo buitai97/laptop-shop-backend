@@ -28,6 +28,9 @@ const initDatabase = async () => {
         const adminRole = await prisma.role.findFirst({
             where: { name: "ADMIN" }
         })
+        const userRole = await prisma.role.findFirst({
+            where: { name: "USER" }
+        })
         if (adminRole) {
             await prisma.user.createMany({
                 data: [
@@ -36,7 +39,7 @@ const initDatabase = async () => {
                         username: "taibui9747@gmail.com",
                         password: defaultPassword,
                         accountType: ACCOUNT_TYPE.SYSTEM,
-                        roleId: adminRole.id,
+                        roleId: userRole.id,
                         avatar: "snow.jpg",
                         address: "Santa Ana"
                     },
@@ -133,7 +136,7 @@ Benefit from roomy keycaps and a spacious touchpad that makes it easier to navig
             },
             {
                 name: "Laptop Acer Nitro",
-                price: 23490000,
+                price: 1300,
                 detailDesc: `Remarkably light and less than half an inch thin, MacBook Air fits easily into your on-the-go lifestyle — and your bag. MacBook Air with M4 is made with over 50 percent recycled materials and has a durable recycled aluminum enclosure.`,
                 shortDesc: "AN515-58-769J i7 12700H",
                 quantity: 99,
@@ -171,11 +174,9 @@ Connectivity is never an issue with the Acer Nitro V 15, featuring a range of po
             data: products
         })
     }
-
     if (countRole !== 0 && countUser !== 0 && countProduct !== 0) {
         console.log(">>> ALREADY INIT DATA...");
     }
-
 }
 
 export default initDatabase;
