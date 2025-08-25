@@ -6,7 +6,7 @@ import { getAdminCreateProductPage, getProductDetailPage, getProductPage, postAd
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogOut, postRegister } from "src/controllers/client/auth.controller";
 import passport from "passport";
 import { isAdmin, isLoggedIn } from "src/middleware/auth";
-import { getCartPage } from "src/controllers/client/cart.controller";
+import { getCartPage, postAddProductToCart, postDeleteProductFromCart } from "src/controllers/client/cart.controller";
 
 const router = express.Router()
 
@@ -24,7 +24,10 @@ const webRoutes = (app: Express) => {
         failureMessage: true
     }))
     router.get("/cart", getCartPage)
-    app.post('/logout', postLogOut);
+    router.post("/add-product-to-cart/:id", postAddProductToCart)
+    router.post('/logout', postLogOut);
+    router.post("/delete-product-from-cart/:id", postDeleteProductFromCart)
+    
 
 
     //admin routes

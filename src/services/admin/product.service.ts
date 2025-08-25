@@ -62,13 +62,6 @@ const deleteProduct = async (id: number) => {
     })
 }
 
-const getProductById = async (id: number) => {
-    const product = await prisma.product.findUnique({
-        where: {
-            id: id
-        }
-    })
-    return product
-}
 
-export { createProduct, getProducts, deleteProduct, updateProduct, getProductById }
+
+export { createProduct, getProducts, deleteProduct, updateProduct }

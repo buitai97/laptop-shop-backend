@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { getUserById, handleCreateUser, handleDeleteUser, handleGetRoles, handleUpdateUser } from "services/user.service";
-import { getProducts } from "src/services/client/item.service";
+import { getProducts } from "src/services/client/product.service";
 
 
 const getHomePage = async (req: Request, res: Response) => {

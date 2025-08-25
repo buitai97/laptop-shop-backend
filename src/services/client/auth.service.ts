@@ -10,10 +10,19 @@ const isEmailExist = async (email: string) => {
     return false
 }
 
+const getUserCartSum = async (id: string) => {
+    const user = await prisma.cart.findUnique({
+        where: {
+            userId: +id
+        },
+    })
+    return user?.sum ?? 0
+}
+
 
 const registerNewUser = async (name: string, username: string, email: string, password: string) => {
     const hashedPassword = await hashPassword(password)
     await prisma.user.create({ data: { accountType: ACCOUNT_TYPE.SYSTEM, email, name, username, password: hashedPassword, roleId: 1 } })
 
 }
-export { isEmailExist, registerNewUser }
+export { isEmailExist, registerNewUser, getUserCartSum }

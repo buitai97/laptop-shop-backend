@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
-import { createProduct, deleteProduct, getProductById, updateProduct } from "src/services/admin/product.service"
+import { createProduct, deleteProduct, updateProduct } from "src/services/admin/product.service"
+import { getProductById } from "src/services/client/product.service";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema"
 
 const factoryOptions = [
@@ -60,7 +61,6 @@ const getProductDetailPage = async (req: Request, res: Response) => {
 }
 
 const postAdminUpdateProductPage = async (req: Request, res: Response) => {
-    console.log(req.body)
     const { id, detailDesc, factory, name, price, quantity, shortDesc, target } = req.body
     const validate = ProductSchema.safeParse(req.body)
 
