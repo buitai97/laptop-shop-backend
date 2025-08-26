@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getProducts } from "src/services/admin/product.service"
+import { getOrderById, getOrders, getProducts } from "src/services/admin/product.service"
 import { getRoles } from "src/services/role.service"
 import { getAllUsers } from "src/services/user.service"
 const getDashBoard = async (req: Request, res: Response) => {
@@ -14,7 +14,8 @@ const getAdminUserPage = async (req: Request, res: Response) => {
 }
 
 const getAdminOrderPage = async (req: Request, res: Response) => {
-    return res.render('admin/order/show.ejs')
+    const orders = await getOrders()
+    return res.render('admin/order/show.ejs', { orders })
 }
 
 const getAdminProductPage = async (req: Request, res: Response) => {
@@ -27,6 +28,13 @@ const getAdminCreateUserPage = async (req: Request, res: Response) => {
     return res.render("admin/user/create-user.ejs", { roles: roles })
 }
 
+const getAdminOrderDetailPage = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const order = await getOrderById(id)
+    const orderDetails = order.orderDetails
+    return res.render("admin/order/order-detail.ejs", { orderDetails })
+}
 
 
-export { getDashBoard, getAdminUserPage, getAdminProductPage, getAdminOrderPage, getAdminCreateUserPage }
+
+export { getDashBoard, getAdminUserPage, getAdminProductPage, getAdminOrderPage, getAdminCreateUserPage, getAdminOrderDetailPage }

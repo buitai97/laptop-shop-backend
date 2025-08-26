@@ -24,9 +24,10 @@ model User {
   accountType String  @db.VarChar(50)
   avatar      String? @db.VarChar(255)
 
-  role   Role  @relation(fields: [roleId], references: [id])
+  role   Role    @relation(fields: [roleId], references: [id])
   roleId Int
   cart   Cart?
+  order  Order[]
 
   @@map("users")
 }
@@ -42,10 +43,37 @@ model Role {
 }
 
 model Order {
-  id         Int    @id @default(autoincrement())
-  totalPrice Float? @db.Float()
+  id              Int    @id @default(autoincrement())
+  totalPrice      Float?
+  receiverAddress String @db.VarChar(255)
+  receiverName    String @db.VarChar(255)
+  receiverPhone   String @db.VarChar(255)
+  status          String @default("PENDING")
+
+  paymentMethod String
+  paymentStatus String
+  paymentRef    String?
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  orderDetails OrderDetail[]
 
   @@map("orders")
+}
+
+model OrderDetail {
+  id       Int @id @default(autoincrement())
+  price    Int
+  quantity Int
+
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @unique
+
+  @@map("order_detail")
 }
 
 model Product {
@@ -60,7 +88,8 @@ model Product {
   factory    String  @db.VarChar(255)
   target     String  @db.VarChar(255)
 
-  CartDetail CartProduct[]
+  CartDetail  CartDetail[]
+  OrderDetail OrderDetail[]
 
   @@map("products")
 }
@@ -75,16 +104,16 @@ model Session {
 }
 
 model Cart {
-  id          Int           @id @default(autoincrement())
-  user        User          @relation(fields: [userId], references: [id])
-  userId      Int           @unique
+  id          Int          @id @default(autoincrement())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      Int          @unique
   sum         Int
-  cartDetails CartProduct[]
+  cartDetails CartDetail[]
 
   @@map("carts")
 }
 
-model CartProduct {
+model CartDetail {
   id       Int   @id @default(autoincrement())
   quantity Int
   price    Float
@@ -95,5 +124,5 @@ model CartProduct {
   cart   Cart @relation(fields: [cartId], references: [id])
   cartId Int
 
-  @@map("cart_product")
+  @@map("cart_details")
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { addProductToCart, deleteCartProduct, getCartById } from "src/services/client/cart.service"
+import { addProductToCart, deletecartDetail, getCartById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "src/services/client/cart.service"
 
 const getCartPage = async (req: Request, res: Response) => {
     const user = req.user
@@ -10,7 +10,25 @@ const getCartPage = async (req: Request, res: Response) => {
         cartDetails.forEach((cartDetails) => {
             total += cartDetails.price * cartDetails.quantity
         })
-        return res.render("client/cart/show.ejs", { cartDetails, total })
+        return res.render("client/cart/cart.ejs", { cartDetails, total })
+    }
+    else {
+        return res.redirect("/login")
+    }
+}
+
+const postCheckout = async (req: Request, res: Response) => {
+    const user = req.user
+    const currentCartDetails: { id: string; quantity: string }[] = req.body?.cartDetails ?? []
+    await updateCartDetailBeforeCheckout(currentCartDetails)
+    if (user) {
+        const cart = await getCartById(user.id)
+        const cartDetails = cart?.cartDetails ?? []
+        let total: number = 0
+        cartDetails.forEach((cartDetails) => {
+            total += cartDetails.price * cartDetails.quantity
+        })
+        return res.render("client/cart/checkout.ejs", { cartDetails, total })
     }
     else {
         return res.redirect("/login")
@@ -34,9 +52,22 @@ const postDeleteProductFromCart = async (req: Request, res: Response) => {
     const { id } = req.params
     const user = req.user
 
-    await deleteCartProduct(user.id, id, +user.sumCart)
+    await deletecartDetail(user.id, id, +user.sumCart)
     return res.redirect("/cart")
 }
 
+const postPlaceOrder = async (req: Request, res: Response) => {
+    const user = req.user
+    const { total, receiverName, receiverAddress, receiverPhone } = req.body
+    if (!user) return res.redirect("login")
+    await handlePlaceOrder(user.id, total, receiverName, receiverAddress, receiverPhone)
 
-export { getCartPage, postAddProductToCart, postDeleteProductFromCart }
+    return res.redirect("/thanks")
+}
+
+const getThanksPage = async (req: Request, res: Response) => {
+    return res.render("client/cart/thanks.ejs")
+}
+
+
+export { getCartPage, postAddProductToCart, postDeleteProductFromCart, postCheckout, getThanksPage, postPlaceOrder }

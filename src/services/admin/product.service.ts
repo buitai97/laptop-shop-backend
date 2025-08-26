@@ -62,6 +62,17 @@ const deleteProduct = async (id: number) => {
     })
 }
 
+const getOrders = async () => {
+    const orders = await prisma.order.findMany({ include: { user: true } })
+    return orders
+}
+
+const getOrderById = async (id: string) => {
+    const order = await prisma.order.findUnique({ where: { id: +id }, include: { orderDetails: { include: { product: true } } } })
+    console.log(order)
+    return order
+}
 
 
-export { createProduct, getProducts, deleteProduct, updateProduct }
+
+export { createProduct, getProducts, deleteProduct, updateProduct, getOrders, getOrderById }
