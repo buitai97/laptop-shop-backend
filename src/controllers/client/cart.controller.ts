@@ -73,10 +73,15 @@ const postPlaceOrder = async (req: Request, res: Response) => {
     const user = req.user
     const { total, receiverName, receiverAddress, receiverPhone } = req.body
     if (!user) return res.redirect("login")
-    await handlePlaceOrder(user.id, total, receiverName, receiverAddress, receiverPhone)
 
-    return res.redirect("/thanks")
+    const message = await handlePlaceOrder(user.id, total, receiverName, receiverAddress, receiverPhone)
+    console.log("check error: >> ", message)
+    if (message) {
+        return res.redirect("/cart")
+    }
+    res.redirect("/thanks")
 }
+
 
 const getThanksPage = async (req: Request, res: Response) => {
     return res.render("client/cart/thanks.ejs")

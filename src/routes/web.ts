@@ -6,7 +6,7 @@ import { getAdminCreateProductPage, getProductDetailPage, getProductPage, postAd
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogOut, postRegister } from "src/controllers/client/auth.controller";
 import passport from "passport";
 import { isAdmin } from "src/middleware/auth";
-import { getCartPage, getThanksPage, postAddProductToCart, postAddProductToCartFromDetail, postCheckout, postDeleteCartItem, postPlaceOrder } from "src/controllers/client/cart.controller";
+import { getCartPage, postCheckout, getThanksPage, postAddProductToCart, postAddProductToCartFromDetail, postDeleteCartItem, postPlaceOrder } from "src/controllers/client/cart.controller";
 import { getOrderHistoryPage } from "src/controllers/client/order.controller";
 
 const router = express.Router()
