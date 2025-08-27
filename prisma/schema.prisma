@@ -43,12 +43,13 @@ model Role {
 }
 
 model Order {
-  id              Int    @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   totalPrice      Float?
-  receiverAddress String @db.VarChar(255)
-  receiverName    String @db.VarChar(255)
-  receiverPhone   String @db.VarChar(255)
-  status          String @default("PENDING")
+  receiverAddress String   @db.VarChar(255)
+  receiverName    String   @db.VarChar(255)
+  receiverPhone   String   @db.VarChar(255)
+  date            DateTime @default(now())
+  status          String   @default("PENDING")
 
   paymentMethod String
   paymentStatus String
@@ -71,7 +72,7 @@ model OrderDetail {
   orderId Int
 
   product   Product @relation(fields: [productId], references: [id])
-  productId Int     @unique
+  productId Int     
 
   @@map("order_detail")
 }

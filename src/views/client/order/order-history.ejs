@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Tech Shop</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="/client/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/client/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/client/css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+</head>
+
+<body>
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar start -->
+    <%- include('../layout/header') -%>
+        <!-- Navbar End -->
+
+        <!-- Cart Page Start -->
+        <div class="container-fluid pt-5">
+            <div class="container">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mt-5">
+                            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                            <li class="breadcrumb-item active">Order History</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="container">
+                <section class="relative">
+                    <div class="w-full max-w-7xl mx-auto px-4 md:px-8">
+                        <h2 class="font-manrope font-extrabold text-3xl lead-10 text-black mb-9">Order History</h2>
+
+                        <% orders.forEach((order)=> { %>
+                            <div class="mt-7 border border-gray-300 pt-9">
+                                <div class="flex max-md:flex-col items-center justify-between px-3 md:px-11">
+                                    <div class="data">
+                                        <p class="font-medium text-lg leading-8 text-black whitespace-nowrap">Order :
+                                            #<%=order.id%>
+                                        </p>
+                                        <p class="font-medium text-lg leading-8 text-black mt-3 whitespace-nowrap">Order
+                                            Payment : <%= order.date.toLocaleDateString("us-US") %>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <% order.orderDetails.forEach((orderDetail)=>{%>
+                                    <div class="order-item">
+                                        <svg class="my-9 w-full" xmlns="http://www.w3.org/2000/svg" width="1216"
+                                            height="2" viewBox="0 0 1216 2" fill="none">
+                                            <path d="M0 1H1216" stroke="#D1D5DB" />
+                                        </svg>
+
+                                        <div class="flex max-lg:flex-col items-end gap-8 lg:gap-24 px-3 md:px-11">
+                                            <div class="grid grid-cols-4 w-full">
+                                                <div class="col-span-4 sm:col-span-1">
+                                                    <img src="/images/product/<%= orderDetail.product.image %>" alt=""
+                                                        class="max-sm:mx-auto object-cover">
+                                                </div>
+                                                <div
+                                                    class="col-span-4 sm:col-span-3 max-sm:mt-4 sm:pl-8 flex flex-col justify-center max-sm:items-center">
+                                                    <h6
+                                                        class="font-manrope font-semibold text-2xl leading-9 text-black mb-3 whitespace-nowrap">
+                                                        <%=orderDetail.product.name%>
+                                                    </h6>
+                                                    <p
+                                                        class="font-normal text-lg leading-8 text-gray-500 mb-8 whitespace-nowrap">
+                                                        <%=orderDetail.product.factory%>
+                                                    </p>
+                                                    <div class="flex items-center max-sm:flex-col gap-x-10 gap-y-3">
+                                                        <p
+                                                            class="font-normal text-lg leading-8 text-gray-500 whitespace-nowrap">
+                                                            Qty:
+                                                            <%=orderDetail.quantity%>
+                                                        </p>
+
+                                                        <p class="font-normal text-lg leading-8 text-gray-500">
+                                                            Price:
+                                                            <span
+                                                                class="font-semibold text-xl leading-8 text-black whitespace-nowrap">
+                                                                <%= new Intl.NumberFormat('us-US', { style: 'currency' ,
+                                                                    currency: 'USD' }).format(orderDetail.price) %>
+                                                            </span>
+                                                        </p>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <% })%>
+
+
+                                        <svg class="mt-9 w-full" xmlns="http://www.w3.org/2000/svg" width="1216"
+                                            height="2" viewBox="0 0 1216 2" fill="none">
+                                            <path d="M0 1H1216" stroke="#D1D5DB" />
+                                        </svg>
+
+                                        <div
+                                            class="px-3 md:px-11 flex items-center justify-between max-sm:flex-col-reverse">
+                                            <div class="flex max-sm:flex-col-reverse items-center">
+                                                <button
+                                                    class="flex items-center gap-3 py-10 pr-8 sm:border-r border-gray-300 font-normal text-xl leading-8 text-gray-500 group transition-all duration-500 hover:text-indigo-600">
+                                                    <svg width="40" height="41" viewBox="0 0 40 41" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            class="stroke-gray-600 transition-all duration-500 group-hover:stroke-indigo-600"
+                                                            d="M14.0261 14.7259L25.5755 26.2753M14.0261 26.2753L25.5755 14.7259"
+                                                            stroke="" stroke-width="1.8" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                    cancel order
+                                                </button>
+                                            </div>
+                                            <div
+                                                class="px-10 flex flex-col justify-center items-start max-sm:items-center">
+                                                <p
+                                                    class="font-normal text-lg text-gray-500 leading-8 mb-2 text-left whitespace-nowrap">
+                                                    Status</p>
+                                                <p
+                                                    class="font-semibold text-lg leading-8 text-green-500 text-left whitespace-nowrap">
+                                                    <%=order.status%>
+                                                </p>
+                                            </div>
+                                            <div
+                                                class="px-10 flex flex-col justify-center items-start max-sm:items-center">
+                                                <p
+                                                    class="font-normal text-lg text-gray-500 leading-8 mb-2 text-left whitespace-nowrap">
+                                                    Total</p>
+                                                <p
+                                                    class="font-semibold text-lg leading-8 text-black text-left whitespace-nowrap">
+                                                    <%= new Intl.NumberFormat('us-US', { style: 'currency' ,
+                                                        currency: 'USD' }).format(order.totalPrice) %>
+                                                </p>
+                                            </div>
+
+                                        </div>
+                            </div>
+                            <% }) %>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Cart Page End -->
+
+
+        <!-- Footer Start -->
+        <%- include('../layout/footer') -%>
+            <!-- Footer End -->
+            <!-- Back to Top -->
+            <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+                    class="fa fa-arrow-up"></i></a>
+
+
+            <!-- JavaScript Libraries -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="/client/lib/easing/easing.min.js"></script>
+            <script src="/client/lib/waypoints/waypoints.min.js"></script>
+            <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
+            <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
+
+            <!-- Template Javascript -->
+            <script src="/client/js/main.js"></script>
+</body>
+
+</html>

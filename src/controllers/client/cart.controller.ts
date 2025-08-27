@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { addProductToCart, deletecartDetail, getCartById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "src/services/client/cart.service"
+import { addProductToCart, deleteCartItem, getCartById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "src/services/client/cart.service"
 
 const getCartPage = async (req: Request, res: Response) => {
     const user = req.user
@@ -47,12 +47,25 @@ const postAddProductToCart = async (req: Request, res: Response) => {
 
     return res.redirect("/")
 }
+const postAddProductToCartFromDetail = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const user = req.user
+    const { quantity } = req.body
+    if (user) {
+        await addProductToCart(Number(quantity), +id, user)
+    }
+    else {
+        return res.redirect("/login")
+    }
 
-const postDeleteProductFromCart = async (req: Request, res: Response) => {
+    return res.redirect(`/product/${id}`)
+}
+
+const postDeleteCartItem = async (req: Request, res: Response) => {
     const { id } = req.params
     const user = req.user
 
-    await deletecartDetail(user.id, id, +user.sumCart)
+    await deleteCartItem(user.id, id, +user.sumCart)
     return res.redirect("/cart")
 }
 
@@ -70,4 +83,4 @@ const getThanksPage = async (req: Request, res: Response) => {
 }
 
 
-export { getCartPage, postAddProductToCart, postDeleteProductFromCart, postCheckout, getThanksPage, postPlaceOrder }
+export { getCartPage, postAddProductToCart, postAddProductToCartFromDetail, postDeleteCartItem, postCheckout, getThanksPage, postPlaceOrder }

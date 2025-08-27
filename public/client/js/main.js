@@ -131,21 +131,21 @@
 
 
     // Product Quantity
-    // $('.quantity button').on('click', function () {
-    //     var button = $(this);
-    //     var oldValue = button.parent().parent().find('input').val();
-    //     if (button.hasClass('btn-plus')) {
-    //         var newVal = parseFloat(oldValue) + 1;
-    //     } else {
-    //         if (oldValue > 0) {
-    //             var newVal = parseFloat(oldValue) - 1;
-    //         } else {
-    //             newVal = 0;
-    //         }
-    //     }
-    //     button.parent().parent().find('input').val(newVal);
-    // });
-    $('.quantity button').on('click', function () {
+    $('.quantity .cart-detail-btn').on('click', function () {
+        var button = $(this);
+        var oldValue = button.parent().parent().find('input').val();
+        if (button.hasClass('btn-plus')) {
+            var newVal = parseFloat(oldValue) + 1;
+        } else {
+            if (oldValue > 1) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+        }
+        button.parent().parent().find('input').val(newVal);
+    });
+    $('.quantity .cart-btn').on('click', function () {
         let change = 0;
 
         var button = $(this);
@@ -189,8 +189,7 @@
                 newTotal = change * (+price) + (+currentTotal);
             }
 
-            //reset change
-            change = 0;
+
 
             //update
             totalPriceElement?.each(function (index, element) {
@@ -201,6 +200,19 @@
                 $(totalPriceElement[index]).attr("data-cart-total-price", newTotal);
             });
         }
+
+        // update sum cart
+        if (change !== 0) {
+            const cartIconElement = $("[data-cart-sum]");
+            if (cartIconElement.length) {
+                const currentSum = Number(cartIconElement.attr("data-cart-sum") || 0);
+                const newSum = currentSum + change;
+
+                cartIconElement.text(newSum).attr("data-cart-sum", newSum);
+            }
+        }
+        //reset change
+        change = 0;
     });
 
     function formatCurrency(value) {

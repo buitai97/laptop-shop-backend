@@ -6,7 +6,8 @@ import { getAdminCreateProductPage, getProductDetailPage, getProductPage, postAd
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogOut, postRegister } from "src/controllers/client/auth.controller";
 import passport from "passport";
 import { isAdmin } from "src/middleware/auth";
-import { getCartPage, getThanksPage, postAddProductToCart, postCheckout, postDeleteProductFromCart, postPlaceOrder } from "src/controllers/client/cart.controller";
+import { getCartPage, getThanksPage, postAddProductToCart, postAddProductToCartFromDetail, postCheckout, postDeleteCartItem, postPlaceOrder } from "src/controllers/client/cart.controller";
+import { getOrderHistoryPage } from "src/controllers/client/order.controller";
 
 const router = express.Router()
 
@@ -26,10 +27,12 @@ const webRoutes = (app: Express) => {
     router.get("/cart", getCartPage)
     router.post("/add-product-to-cart/:id", postAddProductToCart)
     router.post('/logout', postLogOut);
-    router.post("/delete-product-from-cart/:id", postDeleteProductFromCart)
+    router.post("/delete-product-from-cart/:id", postDeleteCartItem)
     router.post("/checkout", postCheckout)
     router.post("/place-order", postPlaceOrder)
     router.get("/thanks", getThanksPage)
+    router.get("/order-history", getOrderHistoryPage)
+    router.post("/add-to-cart-from-detail/:id", postAddProductToCartFromDetail)
 
 
 

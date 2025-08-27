@@ -1,9 +1,12 @@
 import { Request, Response } from "express"
+import { getDashboardInfo } from "src/services/admin/dashboard.service"
 import { getOrderById, getOrders, getProducts } from "src/services/admin/product.service"
 import { getRoles } from "src/services/role.service"
 import { getAllUsers } from "src/services/user.service"
 const getDashBoard = async (req: Request, res: Response) => {
-    return res.render('admin/dashboard/show.ejs')
+    const { userCount, orderCount, productCount } = await getDashboardInfo()
+    
+    return res.render('admin/dashboard/show.ejs', { userCount, orderCount, productCount })
 }
 
 const getAdminUserPage = async (req: Request, res: Response) => {

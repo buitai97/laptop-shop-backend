@@ -32,6 +32,7 @@ CREATE TABLE `orders` (
     `receiverAddress` VARCHAR(255) NOT NULL,
     `receiverName` VARCHAR(255) NOT NULL,
     `receiverPhone` VARCHAR(255) NOT NULL,
+    `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status` VARCHAR(191) NOT NULL DEFAULT 'PENDING',
     `paymentMethod` VARCHAR(191) NOT NULL,
     `paymentStatus` VARCHAR(191) NOT NULL,
@@ -49,7 +50,6 @@ CREATE TABLE `order_detail` (
     `orderId` INTEGER NOT NULL,
     `productId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `order_detail_productId_key`(`productId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -91,7 +91,7 @@ CREATE TABLE `carts` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `cart_product` (
+CREATE TABLE `cart_details` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `quantity` INTEGER NOT NULL,
     `price` DOUBLE NOT NULL,
@@ -117,7 +117,7 @@ ALTER TABLE `order_detail` ADD CONSTRAINT `order_detail_productId_fkey` FOREIGN 
 ALTER TABLE `carts` ADD CONSTRAINT `carts_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `cart_product` ADD CONSTRAINT `cart_product_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `cart_details` ADD CONSTRAINT `cart_details_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `cart_product` ADD CONSTRAINT `cart_product_cartId_fkey` FOREIGN KEY (`cartId`) REFERENCES `carts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `cart_details` ADD CONSTRAINT `cart_details_cartId_fkey` FOREIGN KEY (`cartId`) REFERENCES `carts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

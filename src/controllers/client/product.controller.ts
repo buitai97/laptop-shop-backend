@@ -22,8 +22,6 @@ const targetOptions = [
 const getProductPage = async (req: Request, res: Response) => {
     const id = req.params.id
     const product = await getProductById(+id)
-
-    console.log(product)
     res.render("client/product/detail.ejs", { product })
 }
 

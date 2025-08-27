@@ -28,32 +28,23 @@ const findCartDetailById = async (id: string) => {
     return cartDetail
 }
 
-const deletecartDetail = async (userId: number, productId: string, sumCart: number) => {
-    const cartDetail = await findCartDetailById(productId)
-    if (cartDetail?.quantity > 1) {
-        await prisma.cartDetail.update({
-            where: {
-                id: +productId
-            }, data: {
-                quantity: { decrement: 1 }
-            }
-        })
-    }
-    else if (cartDetail?.quantity === 1) {
-        await prisma.cartDetail.delete({
-            where: {
-                id: +productId
-            }
-        })
+const deleteCartItem = async (userId: number, cartDetailId: string, sumCart: number) => {
+    console.log(cartDetailId)
+    const cartDetail = await findCartDetailById(cartDetailId)
 
-    }
+    await prisma.cartDetail.delete({
+        where: {
+            id: +cartDetailId
+        }
+    })
+
     if (sumCart > 0) {
         await prisma.cart.update({
             where: {
                 userId: userId
             },
             data: {
-                sum: { decrement: 1 }
+                sum: { decrement: cartDetail.quantity }
             }
         })
     }
@@ -82,7 +73,7 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
             }
         })
 
-        const curcartDetail = await prisma.cartDetail.findFirst({
+        const curCartDetail = await prisma.cartDetail.findFirst({
             where: {
                 productId: productId,
                 cartId: cart.id
@@ -91,10 +82,10 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
 
         await prisma.cartDetail.upsert({
             where: {
-                id: curcartDetail?.id ?? 0
+                id: curCartDetail?.id ?? 0
             },
             update: {
-                quantity: { increment: quantity }
+                quantity: { increment: +quantity }
             },
             create: {
                 quantity: quantity,
@@ -113,7 +104,7 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
                     create: [
                         {
                             price: product.price,
-                            quantity: 1,
+                            quantity: quantity,
                             productId: productId
                         }
                     ]
@@ -178,4 +169,4 @@ const handlePlaceOrder = async (userId: number, total: number, receiverName: str
     }
 }
 
-export { getCartById, findCartDetailById, deletecartDetail, handlePlaceOrder, addProductToCart, updateCartDetailBeforeCheckout }
+export { getCartById, findCartDetailById, deleteCartItem, handlePlaceOrder, addProductToCart, updateCartDetailBeforeCheckout }
