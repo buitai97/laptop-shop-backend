@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { createProduct, deleteProduct, updateProduct } from "src/services/admin/product.service"
-import { getProductById } from "src/services/client/product.service";
+import { countTotalProductClientPages, getProductById, getProducts } from "src/services/client/product.service";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema"
 
 const factoryOptions = [
@@ -19,7 +19,22 @@ const targetOptions = [
 ];
 
 
-const getProductPage = async (req: Request, res: Response) => {
+const getClientProductsPage = async (req: Request, res: Response) => {
+    const { page, factory = "", target = "", price = "", sort = "" } = req.query as {
+        page?: string,
+        factory: string,
+        target: string,
+        price: string,
+        sort: string
+    }
+    let currentPage = page ? +page : 1
+    if (currentPage <= 0) currentPage = 1
+    const { products, totalPages } = await getProducts(currentPage, 8, factory, target, price, sort)
+
+    return res.render("client/product/products.ejs", { products, totalPages: +totalPages, page: +currentPage })
+}
+
+const getClientProductDetailPage = async (req: Request, res: Response) => {
     const id = req.params.id
     const product = await getProductById(+id)
     res.render("client/product/detail.ejs", { product })
@@ -52,7 +67,7 @@ const postAdminCreateProduct = async (req: Request, res: Response) => {
     return res.redirect("/admin/product")
 }
 
-const getProductDetailPage = async (req: Request, res: Response) => {
+const getAdminProductDetailPage = async (req: Request, res: Response) => {
     const product = await getProductById(+req.params.id)
     const errors = []
     res.render("admin/product/update-product.ejs", { errors, product, targetOptions, factoryOptions })
@@ -81,5 +96,4 @@ const postDeleteProduct = async (req: Request, res: Response) => {
 }
 
 
-
-export { getProductPage, getAdminCreateProductPage, getProductDetailPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct }
+export { getClientProductDetailPage, getClientProductsPage, getAdminCreateProductPage, getAdminProductDetailPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct }

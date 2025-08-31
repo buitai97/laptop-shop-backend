@@ -1,6 +1,5 @@
-import getConnection from "config/db";
 import { prisma } from 'config/client'
-import { ACCOUNT_TYPE } from "src/config/constant";
+import { ACCOUNT_TYPE, TOTAL_ITEMS_PER_PAGE } from "src/config/constant";
 import bcrypt from 'bcrypt'
 
 const saltRounds = 10;
@@ -34,9 +33,21 @@ const handleCreateUser = async (
     })
 }
 
-const getAllUsers = async () => {
-    const users = await prisma.user.findMany()
+const getUsers = async (page: number) => {
+    const pageSize = TOTAL_ITEMS_PER_PAGE
+    const skip = (page - 1) * pageSize
+    const users = await prisma.user.findMany({
+        skip: skip,
+        take: pageSize,
+    })
     return users
+}
+
+const countTotalUserPages = async () => {
+    const totalItems = await prisma.user.count()
+    const totalPages = Math.ceil(totalItems / TOTAL_ITEMS_PER_PAGE)
+
+    return totalPages
 }
 
 const handleDeleteUser = async (id: string) => {
@@ -101,7 +112,7 @@ const handleGetRoles = async () => {
     return result
 }
 export {
-    handleCreateUser, handleGetRoleDetail, getAllUsers, handleUpdateUser,
+    handleCreateUser, handleGetRoleDetail, getUsers, handleUpdateUser,
     handleDeleteUser, getUserById, hashPassword, handleGetRoles,
-    comparePassword, getUserByIdWithRole
+    comparePassword, getUserByIdWithRole, countTotalUserPages
 }

@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import { postDeleteUser, getHomePage, postCreateUser, getUserDetail, postUpdateUser } from "controllers/user.controller";
 import { getAdminCreateUserPage, getAdminOrderDetailPage, getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashBoard } from "src/controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
-import { getAdminCreateProductPage, getProductDetailPage, getProductPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct } from "src/controllers/client/product.controller";
+import { getAdminCreateProductPage, getAdminProductDetailPage, getClientProductDetailPage, getClientProductsPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct } from "src/controllers/client/product.controller";
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogOut, postRegister } from "src/controllers/client/auth.controller";
 import passport from "passport";
 import { isAdmin } from "src/middleware/auth";
@@ -14,7 +14,7 @@ const router = express.Router()
 const webRoutes = (app: Express) => {
     //client routes
     router.get('/', getHomePage)
-    router.get("/product/:id", getProductPage)
+    router.get("/product/:id", getClientProductDetailPage)
     router.get("/success-redirect", getSuccessRedirectPage)
     router.get("/register", getRegisterPage)
     router.get("/login", getLoginPage)
@@ -33,6 +33,7 @@ const webRoutes = (app: Express) => {
     router.get("/thanks", getThanksPage)
     router.get("/order-history", getOrderHistoryPage)
     router.post("/add-to-cart-from-detail/:id", postAddProductToCartFromDetail)
+    router.get("/products", getClientProductsPage)
 
 
 
@@ -43,7 +44,7 @@ const webRoutes = (app: Express) => {
     router.get("/admin/create-product", getAdminCreateProductPage)
     router.post("/admin/create-product", fileUploadMiddleware("image", "images/product"), postAdminCreateProduct)
     router.post("/admin/delete-product/:id", postDeleteProduct)
-    router.get("/admin/view-product-detail/:id", getProductDetailPage)
+    router.get("/admin/view-product-detail/:id", getAdminProductDetailPage)
     router.post("/admin/update-product", fileUploadMiddleware("image", "images/product"), postAdminUpdateProductPage)
 
 

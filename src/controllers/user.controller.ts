@@ -1,13 +1,16 @@
 import { Request, Response } from "express"
 import { getUserById, handleCreateUser, handleDeleteUser, handleGetRoles, handleUpdateUser } from "services/user.service";
-import { getProducts } from "src/services/client/product.service";
+import { countTotalProductClientPages, getProducts } from "src/services/client/product.service";
 
 
 const getHomePage = async (req: Request, res: Response) => {
-    const products = await getProducts()
     const { page } = req.query
-    console.log(page)
-    return res.render('client/home/show.ejs', { products })
+    let currentPage = page ? +page : 1
+    if (currentPage < 1) currentPage = 1
+
+    const { products, totalPages } = await getProducts(currentPage, 6)
+
+    return res.render('client/home/show.ejs', { products, totalPages: +totalPages, page: currentPage })
 }
 
 const getCreateUserPage = async (req: Request, res: Response) => {

@@ -1,4 +1,5 @@
 import { prisma } from "src/config/client"
+import { TOTAL_ITEMS_PER_PAGE } from "src/config/constant"
 
 
 
@@ -17,4 +18,11 @@ const getOrdersByUserId = async (userId: number) => {
     return orders
 }
 
-export { getOrdersByUserId }
+const countTotalOrderPages = async () => {
+    const totalOrders = await prisma.order.count()
+    const totalPages = Math.ceil(totalOrders / TOTAL_ITEMS_PER_PAGE)
+
+    return totalPages
+}
+
+export { getOrdersByUserId, countTotalOrderPages }

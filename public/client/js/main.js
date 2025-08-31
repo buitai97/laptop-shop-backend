@@ -118,6 +118,7 @@
         $('.btn-play').click(function () {
             $videoSrc = $(this).data("src");
         });
+        console.log($videoSrc);
 
         $('#videoModal').on('shown.bs.modal', function (e) {
             $("#video").attr('src', $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
@@ -131,21 +132,21 @@
 
 
     // Product Quantity
-    $('.quantity .cart-detail-btn').on('click', function () {
-        var button = $(this);
-        var oldValue = button.parent().parent().find('input').val();
-        if (button.hasClass('btn-plus')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            if (oldValue > 1) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 1;
-            }
-        }
-        button.parent().parent().find('input').val(newVal);
-    });
-    $('.quantity .cart-btn').on('click', function () {
+    // $('.quantity button').on('click', function () {
+    //     var button = $(this);
+    //     var oldValue = button.parent().parent().find('input').val();
+    //     if (button.hasClass('btn-plus')) {
+    //         var newVal = parseFloat(oldValue) + 1;
+    //     } else {
+    //         if (oldValue > 0) {
+    //             var newVal = parseFloat(oldValue) - 1;
+    //         } else {
+    //             newVal = 0;
+    //         }
+    //     }
+    //     button.parent().parent().find('input').val(newVal);
+    // });
+    $('.quantity button').on('click', function () {
         let change = 0;
 
         var button = $(this);
@@ -163,9 +164,17 @@
         }
         const input = button.parent().parent().find('input');
         input.val(newVal);
+
+        //set form index
         const index = input.attr("data-cart-detail-index")
         const el = document.getElementById(`cartDetails[${index}]`);
         $(el).val(newVal);
+
+        //set quantity for detail page
+        const elDetail = document.getElementById(`quantityDetail`);
+        if (elDetail) {
+            $(elDetail).val(newVal);
+        }
 
         //get price
         const price = input.attr("data-cart-detail-price");
@@ -189,7 +198,8 @@
                 newTotal = change * (+price) + (+currentTotal);
             }
 
-
+            //reset change
+            change = 0;
 
             //update
             totalPriceElement?.each(function (index, element) {
@@ -200,25 +210,115 @@
                 $(totalPriceElement[index]).attr("data-cart-total-price", newTotal);
             });
         }
-
-        // update sum cart
-        if (change !== 0) {
-            const cartIconElement = $("[data-cart-sum]");
-            if (cartIconElement.length) {
-                const currentSum = Number(cartIconElement.attr("data-cart-sum") || 0);
-                const newSum = currentSum + change;
-
-                cartIconElement.text(newSum).attr("data-cart-sum", newSum);
-            }
-        }
-        //reset change
-        change = 0;
     });
 
     function formatCurrency(value) {
-        return new Intl.NumberFormat('us-US', {
-            style: 'currency', currency: 'USD'
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency', currency: 'VND'
         }).format(value)
+    }
+
+    //add active class to header
+    const navElement = $("#navbarCollapse");
+    const currentUrl = window.location.pathname;
+    navElement.find('a.nav-link').each(function () {
+        const link = $(this); // Get the current link in the loop
+        const href = link.attr('href'); // Get the href attribute of the link
+
+        if (href === currentUrl) {
+            link.addClass('active'); // Add 'active' class if the href matches the current URL
+        } else {
+            link.removeClass('active'); // Remove 'active' class if the href does not match
+        }
+    });
+
+
+    //handle filter products
+    $('#btnFilter').click(function (event) {
+        event.preventDefault();
+
+        let factoryArr = [];
+        let targetArr = [];
+        let priceArr = [];
+        //factory filter
+        $("#factoryFilter .form-check-input:checked").each(function () {
+            factoryArr.push($(this).val());
+        });
+
+        //target filter
+        $("#targetFilter .form-check-input:checked").each(function () {
+            targetArr.push($(this).val());
+        });
+
+        //price filter
+        $("#priceFilter .form-check-input:checked").each(function () {
+            priceArr.push($(this).val());
+        });
+
+        //sort order
+        let sortValue = $('input[name="radio-sort"]:checked').val();
+
+        const currentUrl = new URL(window.location.href);
+        const searchParams = currentUrl.searchParams;
+
+        const currentPage = searchParams?.get("page") ?? "1"
+        // Add or update query parameters
+        searchParams.set('page', currentPage);
+        searchParams.set('sort', sortValue);
+
+        //reset
+        searchParams.delete('factory');
+        searchParams.delete('target');
+        searchParams.delete('price');
+
+        if (factoryArr.length > 0) {
+            searchParams.set('factory', factoryArr.join(','));
+        }
+
+        if (targetArr.length > 0) {
+            searchParams.set('target', targetArr.join(','));
+        }
+
+        if (priceArr.length > 0) {
+            searchParams.set('price', priceArr.join(','));
+        }
+
+        // Update the URL and reload the page
+        window.location.href = currentUrl.toString();
+    });
+
+    //handle auto checkbox after page loading
+    // Parse the URL parameters
+    const params = new URLSearchParams(window.location.search);
+
+    // Set checkboxes for 'factory'
+    if (params.has('factory')) {
+        const factories = params.get('factory').split(',');
+        factories.forEach(factory => {
+            $(`#factoryFilter .form-check-input[value="${factory}"]`).prop('checked', true);
+        });
+    }
+
+    // Set checkboxes for 'target'
+    if (params.has('target')) {
+        const targets = params.get('target').split(',');
+        targets.forEach(target => {
+            $(`#targetFilter .form-check-input[value="${target}"]`).prop('checked', true);
+        });
+    }
+
+    // Set checkboxes for 'price'
+    if (params.has('price')) {
+        const prices = params.get('price').split(',');
+        prices.forEach(price => {
+            $(`#priceFilter .form-check-input[value="${price}"]`).prop('checked', true);
+        });
+    }
+
+    // Set radio buttons for 'sort'
+    if (params.has('sort')) {
+        const sort = params.get('sort');
+        $(`input[type="radio"][name="radio-sort"][value="${sort}"]`).prop('checked', true);
     }
 
 })(jQuery);
