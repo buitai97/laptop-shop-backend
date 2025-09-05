@@ -8,10 +8,13 @@ import configPassportLocal from './middleware/passport.local';
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { PrismaClient } from '@prisma/client';
-
+import apiRoutes from './routes/api';
+import cors from 'cors'
 
 
 const app = express();
+
+app.use(cors())
 
 app.set('view engine', 'ejs');
 app.set('views', './src/views')
@@ -56,6 +59,8 @@ app.use(express.static('public'))
 
 //config routes
 webRoutes(app)
+apiRoutes(app)
+
 // seeding data
 initDatabase()
 
