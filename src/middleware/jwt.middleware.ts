@@ -18,15 +18,15 @@ const checkValidJWT = (req: Request, res: Response, next: NextFunction) => {
         req.user = {
             id: dataDecoded.id,
             username: dataDecoded.username,
-            password: "",
-            name: "",
-            address: "",
-            email: "",
-            phone: "",
+            name: dataDecoded.name,
+            address: dataDecoded.address,
+            email: dataDecoded.email,
+            phone: dataDecoded.phone,
             accountType: dataDecoded.accountType,
             avatar: dataDecoded.avatar,
             roleId: dataDecoded.roleId,
-            role: dataDecoded.role
+            role: dataDecoded.role,
+            password: ""
         }
         next()
     }

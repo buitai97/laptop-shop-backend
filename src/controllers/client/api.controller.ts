@@ -3,8 +3,6 @@ import { handleGetAllUsers, handleGetUserByID, handleUserLogin } from "src/servi
 
 const getUsersAPI = async (req: Request, res: Response) => {
     const users = await handleGetAllUsers()
-    const user = req.user
-    console.log(user)
     return res.status(200).json(users)
 }
 
@@ -19,16 +17,15 @@ const getUserByID = async (req: Request, res: Response) => {
 const loginAPI = async (req: Request, res: Response) => {
     const { username, password } = req.body
     try {
-        const access_token = await handleUserLogin(username, password)
+        const accessToken = await handleUserLogin(username, password)
         res.status(200).json({
-            data: { access_token }
+            accessToken
         })
     } catch (error) {
         res.status(401).json({
             data: null,
             message: error.message
         })
-
     }
 }
 

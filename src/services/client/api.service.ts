@@ -2,9 +2,10 @@ import { prisma } from "src/config/client"
 import { comparePassword } from "../user.service"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
+import { name } from "ejs"
 
 const handleGetAllUsers = async () => {
-    return await prisma.user.findMany()
+    return await prisma.user.findMany({ omit: { password: true } })
 }
 
 const handleGetUserByID = async (id: string) => {
@@ -26,7 +27,8 @@ const handleUserLogin = async (username: string, password: string) => {
         roleId: user.roleId,
         accountType: user.accountType,
         avatar: user.avatar,
-        role: user.role
+        role: user.role,
+        name: user.name
     }
 
     const secret = process.env.JWT_SECRET
