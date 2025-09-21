@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { createProduct, deleteProduct, updateProduct } from "src/services/admin/product.service"
-import { countTotalProductClientPages, getProductById, getProducts } from "src/services/client/product.service";
+import { getProductById, getProducts } from "src/services/client/product.service";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema"
 
 const factoryOptions = [
@@ -95,5 +95,10 @@ const postDeleteProduct = async (req: Request, res: Response) => {
     return res.redirect("/admin/product")
 }
 
+const getProductsAPI = async (req: Request, res: Response) => {
+    const products = await getProducts(1, 5)
+    return res.status(200).json(products)
+}
 
-export { getClientProductDetailPage, getClientProductsPage, getAdminCreateProductPage, getAdminProductDetailPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct }
+
+export { getProductsAPI, getClientProductDetailPage, getClientProductsPage, getAdminCreateProductPage, getAdminProductDetailPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct }
