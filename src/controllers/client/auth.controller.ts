@@ -15,13 +15,13 @@ const getLoginPage = async (req: Request, res: Response) => {
 }
 
 const postRegister = async (req: Request, res: Response) => {
-    const { name, username, password, email, confirmPassword } = req.body as TRegisterSchema
+    const { name, username, email, password } = req.body as TRegisterSchema
     const validate = await RegisterSchema.safeParseAsync(req.body)
     if (!validate.success) {
         const errorsZod = validate.error.issues
         const errors = errorsZod?.map((error) => `${error.message} (${error.path[0]})`)
         const oldData = {
-            name, password, email, confirmPassword
+            name, password, email
         }
         return res.render("client/auth/register.ejs", {
             errors, oldData
@@ -49,7 +49,7 @@ const getSuccessRedirectPage = async (req: Request, res: Response) => {
 const postLogOut = (req: Request, res: Response, next: NextFunction) => {
     req.logout(function (err) {
         if (err) { return next(err); }
-        res.redirect('/');
+        res.status(200)
     });
 }
 

@@ -1,7 +1,8 @@
 import { prisma } from "src/config/client"
-import { comparePassword } from "../user.service"
+import { comparePassword, hashPassword } from "../user.service"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
+import { ACCOUNT_TYPE } from "src/config/constant"
 
 const handleGetAllUsers = async () => {
     return await prisma.user.findMany({ omit: { password: true } })
@@ -11,7 +12,11 @@ const handleGetUserByID = async (id: string) => {
     return await prisma.user.findUnique({ where: { id: +id } })
 }
 
+const handleRegisterUser = async (name: string, username: string, email: string, password: string) => {
+    const hashedPassword = await hashPassword(password)
+    await prisma.user.create({ data: { accountType: ACCOUNT_TYPE.SYSTEM, email, name, username, password: hashedPassword, roleId: 1 } })
 
+}
 
 const handleUserLogin = async (username: string, password: string) => {
     const user = await prisma.user.findUnique({ where: { username: username }, include: { role: true } })
@@ -44,5 +49,5 @@ export {
     handleGetAllUsers,
     handleGetUserByID,
     handleUserLogin,
-
+    handleRegisterUser
 }

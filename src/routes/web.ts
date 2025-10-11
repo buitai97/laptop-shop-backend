@@ -26,7 +26,6 @@ const webRoutes = (app: Express) => {
     }))
     router.get("/cart", getCartPage)
     router.post("/add-product-to-cart/:id", postAddProductToCart)
-    router.post('/logout', postLogOut);
     router.post("/delete-product-from-cart/:id", postDeleteCartItem)
     router.post("/checkout", postCheckout)
     router.post("/place-order", postPlaceOrder)

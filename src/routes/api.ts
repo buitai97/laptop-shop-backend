@@ -1,5 +1,6 @@
 import express, { Express } from 'express'
-import { fetchAccountAPI, getUserByID, getUsersAPI, loginAPI } from 'src/controllers/client/api.controller'
+import { fetchAccountAPI, getUserByID, getUsersAPI, loginAPI, registerAPI } from 'src/controllers/client/api.controller'
+import { postLogOut } from 'src/controllers/client/auth.controller'
 import { getProductsAPI } from 'src/controllers/client/product.controller'
 import { checkValidJWT } from 'src/middleware/jwt.middleware'
 
@@ -10,10 +11,12 @@ const apiRoutes = (app: Express) => {
 
     router.get("/users", getUsersAPI)
     router.get("/users/:id", getUserByID)
+
+    router.post("/register", registerAPI)
     router.post("/login", loginAPI)
+    router.post('/logout', postLogOut);
     router.get("/account", fetchAccountAPI)
     router.get("/products", getProductsAPI)
-
     app.use("/api",checkValidJWT, router)
 }
 
