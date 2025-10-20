@@ -6,9 +6,14 @@ import 'dotenv/config'
 const checkValidJWT = (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers['authorization']?.split(' ')[1]
     const whiteList = [
-        "/login", "/products", "/register"
+        "/login", "/products", /^\/products\/[^/]+$/
     ]
-    const isWhiteList = whiteList.some(route => route === req.path)
+    const isWhiteList = whiteList.some(route => {
+        if (route instanceof RegExp) {
+            return route.test(req.path)
+        }
+        return route === req.path
+    })
     if (isWhiteList) {
         next()
         return

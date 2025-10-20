@@ -100,5 +100,10 @@ const getProductsAPI = async (req: Request, res: Response) => {
     return res.status(200).json(products)
 }
 
+const getProductAPI = async (req: Request, res: Response) => {
+    const product = await getProductById(+req.params.id)
+    return res.status(200).json(product)
+}
 
-export { getProductsAPI, getClientProductDetailPage, getClientProductsPage, getAdminCreateProductPage, getAdminProductDetailPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct }
+
+export { getProductsAPI, getProductAPI, getClientProductDetailPage, getClientProductsPage, getAdminCreateProductPage, getAdminProductDetailPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct }
