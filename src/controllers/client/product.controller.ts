@@ -20,16 +20,16 @@ const targetOptions = [
 
 
 const getClientProductsPage = async (req: Request, res: Response) => {
-    const { page, factory = "", target = "", price = "", sort = "" } = req.query as {
+    const { page, brands, target, price = "", sort = "" } = req.query as {
         page?: string,
-        factory: string,
-        target: string,
+        brands: string[],
+        target: string[],
         price: string,
         sort: string
     }
     let currentPage = page ? +page : 1
     if (currentPage <= 0) currentPage = 1
-    const { products, totalPages } = await getProducts(currentPage, 8, factory, target, price, sort)
+    const { products, totalPages } = await getProducts(currentPage, 8, brands, target, price, ["0", "3000"], "false", sort)
 
     return res.render("client/product/products.ejs", { products, totalPages: +totalPages, page: +currentPage })
 }
@@ -96,8 +96,8 @@ const postDeleteProduct = async (req: Request, res: Response) => {
 }
 
 const getProductsAPI = async (req: Request, res: Response) => {
-    const { page, pageSize, factory, target, price, sort } = req.query;
-    const products = await getProducts(+page, +pageSize, factory as string, target as string, price as string, sort as string)
+    const { page, pageSize, brands, targets, price, priceRange, inStockOnly, sort } = req.query;
+    const products = await getProducts(+page, +pageSize, brands as string[], targets as string[], price as string, priceRange as string[], inStockOnly as string, sort as string)
     return res.status(200).json(products)
 }
 

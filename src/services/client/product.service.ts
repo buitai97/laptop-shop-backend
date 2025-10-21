@@ -3,24 +3,38 @@ import { prisma } from "src/config/client"
 const getProducts = async (
     page: number,
     pageSize?: number,
-    factory?: string,
-    target?: string,
+    brands?: string | string[],
+    targets?: string | string[],
     price?: string,
+    priceRange?: string[],
+    inStockOnly?: string,
     sort?: string
 ) => {
 
     let whereClause: any = {}
-    if (factory) {
-        const factoryInput = factory.split(",")
-        whereClause.factory = { in: factoryInput }
+    if (brands) {
+        const brandsArray = Array.isArray(brands) ? brands : [brands];
+        whereClause.factory = { in: brandsArray }
     }
 
 
-    if (target) {
-        const targetInput = target.split(",")
-        whereClause.target = { in: targetInput }
+    if (targets) {
+        const targetArray = Array.isArray(targets) ? targets : [targets];
+        whereClause.target = { in: targetArray }
     }
 
+    if (priceRange) {
+        const [gt, lt] = priceRange
+        whereClause.price = {
+            gte: +gt,
+            lte: +lt,
+        }
+    }
+    if (inStockOnly == "true") {
+        whereClause.quantity = {
+            gte: 1,
+        }
+    }
 
     if (price) {
         const priceInput = price.split(',')
