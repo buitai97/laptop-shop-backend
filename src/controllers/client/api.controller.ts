@@ -3,8 +3,8 @@ import { handleGetAllUsers, handleGetUserByID, handleRegisterUser, handleUserLog
 import { RegisterSchema, TRegisterSchema } from "src/validation/register.schema";
 
 const getUsersAPI = async (req: Request, res: Response) => {
-    const users = await handleGetAllUsers()
-    return res.status(200).json(users)
+    const [users, count] = await handleGetAllUsers()
+    return res.status(200).json({ users, count })
 }
 
 const getUserByID = async (req: Request, res: Response) => {

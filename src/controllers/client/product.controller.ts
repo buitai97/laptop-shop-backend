@@ -96,8 +96,8 @@ const postDeleteProduct = async (req: Request, res: Response) => {
 }
 
 const getProductsAPI = async (req: Request, res: Response) => {
-    const { page = "1", size = "10" } = req.query;
-    const products = await getProducts(+page, +size)
+    const { page, pageSize, factory, target, price, sort } = req.query;
+    const products = await getProducts(+page, +pageSize, factory as string, target as string, price as string, sort as string)
     return res.status(200).json(products)
 }
 

@@ -5,7 +5,11 @@ import "dotenv/config"
 import { ACCOUNT_TYPE } from "src/config/constant"
 
 const handleGetAllUsers = async () => {
-    return await prisma.user.findMany({ omit: { password: true } })
+    const users = await prisma.user.findMany({ omit: { password: true } })
+    const count = await prisma.user.count()
+
+    return [users, count]
+
 }
 
 const handleGetUserByID = async (id: string) => {

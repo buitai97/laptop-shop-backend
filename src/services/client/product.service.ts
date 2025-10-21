@@ -65,8 +65,6 @@ const getProducts = async (
     }
 
     const skip = (page - 1) * pageSize
-
-
     const [products, count] = await prisma.$transaction([
         prisma.product.findMany({
             skip: skip,
@@ -79,10 +77,7 @@ const getProducts = async (
 
     const totalPages = Math.ceil(count / pageSize)
 
-
-
-
-    return { products, totalPages }
+    return { products, totalPages, count }
 }
 
 const countTotalProductClientPages = async (pageSize: number) => {
