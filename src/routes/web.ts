@@ -1,13 +1,13 @@
 import express, { Express } from "express";
-import { postDeleteUser, getHomePage, postCreateUser, getUserDetail, postUpdateUser } from "controllers/user.controller";
-import { getAdminCreateUserPage, getAdminOrderDetailPage, getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashBoard } from "controllers/admin/dashboard.controller";
-import fileUploadMiddleware from "middleware/multer";
-import { getAdminCreateProductPage, getAdminProductDetailPage, getClientProductDetailPage, getClientProductsPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct } from "controllers/client/product.controller";
-import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogOut, postRegister } from "controllers/client/auth.controller";
+import { postDeleteUser, getHomePage, postCreateUser, getUserDetail, postUpdateUser } from "../controllers/user.controller";
+import { getAdminCreateUserPage, getAdminOrderDetailPage, getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashBoard } from "../controllers/admin/dashboard.controller";
+import fileUploadMiddleware from "../middleware/multer";
+import { getAdminCreateProductPage, getAdminProductDetailPage, getClientProductDetailPage, getClientProductsPage, postAdminCreateProduct, postAdminUpdateProductPage, postDeleteProduct } from "../controllers/client/product.controller";
+import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postRegister } from "../controllers/client/auth.controller";
 import passport from "passport";
-import { isAdmin } from "middleware/auth";
-import { getCartPage, postCheckout, getThanksPage, postAddProductToCart, postAddProductToCartFromDetail, postDeleteCartItem, postPlaceOrder } from "controllers/client/cart.controller";
-import { getOrderHistoryPage } from "controllers/client/order.controller";
+import { isAdmin } from "../middleware/auth";
+import { getCartPage, postCheckout, getThanksPage, postAddProductToCart, postAddProductToCartFromDetail, postDeleteCartItem, postPlaceOrder } from "../controllers/client/cart.controller";
+import { getOrderHistoryPage } from "../controllers/client/order.controller";
 
 const router = express.Router()
 

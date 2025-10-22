@@ -1,6 +1,6 @@
-import { prisma } from "config/client"
+import { prisma } from "../../config/client"
 import { hashPassword } from "../user.service"
-import { ACCOUNT_TYPE } from "config/constant"
+import { ACCOUNT_TYPE } from "../../config/constant"
 
 const isEmailExist = async (email: string) => {
     const user = await prisma.user.findUnique({

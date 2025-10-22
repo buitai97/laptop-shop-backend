@@ -1,4 +1,4 @@
-import { prisma } from "config/client"
+import { prisma } from "../../config/client"
 
 const getDashboardInfo = async () => {
     const userCount = await prisma.user.count()

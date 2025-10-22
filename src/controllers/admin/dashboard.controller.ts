@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
-import { getDashboardInfo } from "services/admin/dashboard.service"
-import { countTotalProductPages, getOrderById, getOrders, getProducts } from "services/admin/product.service"
-import { countTotalOrderPages } from "services/client/order.service"
-import { getRoles } from "services/role.service"
-import { countTotalUserPages, getUsers } from "services/user.service"
+import { getDashboardInfo } from "../../services/admin/dashboard.service"
+import { countTotalProductPages, getOrderById, getOrders, getProducts } from "../../services/admin/product.service"
+import { countTotalOrderPages } from "../../services/client/order.service"
+import { getRoles } from "../../services/role.service"
+import { countTotalUserPages, getUsers } from "../../services/user.service"
 const getDashBoard = async (req: Request, res: Response) => {
     const { userCount, orderCount, productCount } = await getDashboardInfo()
 

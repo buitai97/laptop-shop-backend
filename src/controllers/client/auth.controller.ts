@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-import { registerNewUser } from "services/client/auth.service"
-import { RegisterSchema, TRegisterSchema } from "validation/register.schema"
+import { registerNewUser } from "../../services/client/auth.service"
+import { RegisterSchema, TRegisterSchema } from "../../validation/register.schema"
 
 
 const getRegisterPage = async (req: Request, res: Response) => {

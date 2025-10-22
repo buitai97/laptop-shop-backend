@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { createProduct, deleteProduct, updateProduct } from "services/admin/product.service"
-import { getProductById, getProducts } from "services/client/product.service";
-import { ProductSchema, TProductSchema } from "validation/product.schema"
+import { createProduct, deleteProduct, updateProduct } from "../../services/admin/product.service"
+import { getProductById, getProducts } from "../../services/client/product.service";
+import { ProductSchema, TProductSchema } from "../../validation/product.schema"
 
 const factoryOptions = [
     { name: "Apple (MacBook)", value: "APPLE" },

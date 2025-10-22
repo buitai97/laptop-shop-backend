@@ -1,8 +1,8 @@
 import express, { Express } from 'express'
-import { fetchAccountAPI, getUserByID, getUsersAPI, loginAPI, registerAPI } from 'controllers/client/api.controller'
-import { postLogOut } from 'controllers/client/auth.controller'
-import { getProductAPI, getProductsAPI } from 'controllers/client/product.controller'
-import { checkValidJWT } from 'middleware/jwt.middleware'
+import { fetchAccountAPI, getUserByID, getUsersAPI, loginAPI, registerAPI } from '../controllers/client/api.controller'
+import { postLogOut } from '../controllers/client/auth.controller'
+import { getProductAPI, getProductsAPI } from '../controllers/client/product.controller'
+import { checkValidJWT } from '../middleware/jwt.middleware'
 
 const router = express.Router()
 

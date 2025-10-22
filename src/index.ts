@@ -3,14 +3,14 @@ import 'dotenv/config'
 import express, { Express, NextFunction, Request, Response } from "express";
 import webRoutes from './routes/web';
 import passport from 'passport';
-import configPassportLocal from 'middleware/passport.local';
+import configPassportLocal from './middleware/passport.local';
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import apiRoutes from './routes/api';
 import cors from 'cors'
 import path from 'path'
-import prisma from 'lib/prisma';
-import initDatabase from 'config/seed';
+import prisma from './lib/prisma';
+import initDatabase from './config/seed';
 
 
 const app: Express = express();

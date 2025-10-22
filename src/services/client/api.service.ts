@@ -1,8 +1,8 @@
-import { prisma } from "config/client"
+import { prisma } from "../../config/client"
 import { comparePassword, hashPassword } from "../user.service"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
-import { ACCOUNT_TYPE } from "config/constant"
+import { ACCOUNT_TYPE } from "../../config/constant"
 
 const handleGetAllUsers = async () => {
     const users = await prisma.user.findMany({ omit: { password: true } })
