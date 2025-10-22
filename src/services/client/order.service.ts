@@ -1,5 +1,5 @@
-import { prisma } from "src/config/client"
-import { TOTAL_ITEMS_PER_PAGE } from "src/config/constant"
+import { prisma } from "config/client"
+import { TOTAL_ITEMS_PER_PAGE } from "config/constant"
 
 
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { handleGetAllUsers, handleGetUserByID, handleRegisterUser, handleUserLogin } from "src/services/client/api.service";
-import { RegisterSchema, TRegisterSchema } from "src/validation/register.schema";
+import { handleGetAllUsers, handleGetUserByID, handleRegisterUser, handleUserLogin } from "services/client/api.service";
+import { RegisterSchema, TRegisterSchema } from "validation/register.schema";
 
 const getUsersAPI = async (req: Request, res: Response) => {
     const [users, count] = await handleGetAllUsers()

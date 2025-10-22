@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getOrdersByUserId } from "src/services/client/order.service"
+import { getOrdersByUserId } from "services/client/order.service"
 
 const getOrderHistoryPage = async (req: Request, res: Response) => {
     const userId = req.user.id

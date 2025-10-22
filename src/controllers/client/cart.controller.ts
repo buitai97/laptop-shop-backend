@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { addProductToCart, deleteCartItem, getCartById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "src/services/client/cart.service"
+import { addProductToCart, deleteCartItem, getCartById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "services/client/cart.service"
 
 const getCartPage = async (req: Request, res: Response) => {
     const user = req.user

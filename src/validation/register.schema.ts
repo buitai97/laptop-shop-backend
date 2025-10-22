@@ -1,4 +1,4 @@
-import { isEmailExist } from 'src/services/client/auth.service'
+import { isEmailExist } from 'services/client/auth.service'
 import { z } from 'zod'
 
 

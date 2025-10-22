@@ -1,8 +1,8 @@
 import passport from "passport"
 import { Strategy as LocalStrategy } from "passport-local"
-import { prisma } from "src/config/client";
-import { getUserCartSum } from "src/services/client/auth.service";
-import { comparePassword, getUserByIdWithRole } from "src/services/user.service";
+import { prisma } from "config/client";
+import { getUserCartSum } from "services/client/auth.service";
+import { comparePassword, getUserByIdWithRole } from "services/user.service";
 
 
 const configPassportLocal = () => {

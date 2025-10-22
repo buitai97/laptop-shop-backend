@@ -1,4 +1,4 @@
-import { prisma } from "src/config/client"
+import { prisma } from "config/client"
 
 const getProducts = async (
     page: number,
