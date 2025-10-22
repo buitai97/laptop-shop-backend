@@ -30,7 +30,6 @@ const findCartDetailById = async (id: string) => {
 }
 
 const deleteCartItem = async (userId: number, cartDetailId: string, sumCart: number) => {
-    console.log(cartDetailId)
     const cartDetail = await findCartDetailById(cartDetailId)
 
     await prisma.cartDetail.delete({
