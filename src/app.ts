@@ -2,7 +2,6 @@
 import 'dotenv/config'
 import express, { Express, NextFunction, Request, Response } from "express";
 import apiRoutes from './routes/api';
-import cors from 'cors'
 import path from 'path'
 import initDatabase from './config/seed';
 
@@ -10,7 +9,7 @@ import initDatabase from './config/seed';
 const app: Express = express();
 
 const allowedOrigins = [
-    'https://techshop-backend-4g9y.onrender.com',
+    'https://tech-shop-frontend-five.vercel.app',
     'http://localhost:5173',
 ];
 
