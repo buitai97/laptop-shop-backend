@@ -1,6 +1,6 @@
 /// <reference path="./types/index.d.ts"/>
 import 'dotenv/config'
-import express from "express";
+import express, { Request, Response } from "express";
 import webRoutes from 'routes/web';
 import initDatabase from 'config/seed';
 import passport from 'passport';
@@ -65,6 +65,14 @@ app.use(express.static(path.join(process.cwd(), 'public')))
 //config routes
 webRoutes(app)
 apiRoutes(app)
+
+app.get('/api/health', (req: Request, res: Response) => {
+    res.json({ status: 'ok', message: 'Server is running' });
+});
+
+app.use((_req: Request, res: Response) => {
+    res.status(404).render('status/404.ejs');
+});
 
 // seeding data
 if (process.env.NODE_ENV !== 'production') {
