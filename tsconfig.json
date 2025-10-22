@@ -2,24 +2,16 @@
     "compilerOptions": {
         "module": "commonjs",
         "esModuleInterop": true,
+        "typeRoots": [
+            "src/types",
+            "./node_modules/@types"
+        ],
         "target": "es6",
-        "sourceMap": true,
-        "skipLibCheck": true,
         "outDir": "dist",
-        "baseUrl": "src",
-        "paths": {
-            "routes/*": [
-                "routes/*"
-            ],
-            "controllers/*": [
-                "controllers/*"
-            ],
-            "middleware/*": [
-                "middleware/*"
-            ],
-            "config/*": [
-                "config/*"
-            ]
-        }
-    }
+        "rootDir": "./src"
+    },
+    "include": [
+        "src",
+        "src/types"
+    ]
 }

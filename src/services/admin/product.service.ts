@@ -61,11 +61,6 @@ const getProducts = async (page: number) => {
     return products
 }
 
-const countTotalProductPages = async () => {
-    const totalProducts = await prisma.product.count()
-    const totalPages = Math.ceil(totalProducts / TOTAL_ITEMS_PER_PAGE)
-    return totalPages
-}
 
 const deleteProduct = async (id: number) => {
     await prisma.product.delete({
@@ -81,10 +76,9 @@ const getOrders = async (page: number) => {
 
 const getOrderById = async (id: string) => {
     const order = await prisma.order.findUnique({ where: { id: +id }, include: { orderDetails: { include: { product: true } } } })
-    console.log(order)
     return order
 }
 
 
 
-export { createProduct, getProducts, deleteProduct, updateProduct, getOrders, getOrderById, countTotalProductPages }
+export { createProduct, getProducts, deleteProduct, updateProduct, getOrders }

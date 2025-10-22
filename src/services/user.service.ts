@@ -43,13 +43,6 @@ const getUsers = async (page: number) => {
     return users
 }
 
-const countTotalUserPages = async () => {
-    const totalItems = await prisma.user.count()
-    const totalPages = Math.ceil(totalItems / TOTAL_ITEMS_PER_PAGE)
-
-    return totalPages
-}
-
 const handleDeleteUser = async (id: string) => {
     const result = await prisma.user.delete({ where: { id: +id } })
     return result
@@ -83,20 +76,6 @@ const getUserById = async (id: string) => {
     return user
 }
 
-const getUserByIdWithRole = async (id: string) => {
-    const userWithRole = await prisma.user.findUnique({
-        where: {
-            id: +id
-        },
-        include: {
-            role: true
-        },
-        omit: {
-            password: true
-        }
-    })
-    return userWithRole
-}
 
 const handleGetRoleDetail = async (roleId: string) => {
     const result = await prisma.role.findUnique({
@@ -111,8 +90,9 @@ const handleGetRoles = async () => {
     const result = await prisma.role.findMany()
     return result
 }
+
 export {
     handleCreateUser, handleGetRoleDetail, getUsers, handleUpdateUser,
     handleDeleteUser, getUserById, hashPassword, handleGetRoles,
-    comparePassword, getUserByIdWithRole, countTotalUserPages
+    comparePassword
 }
