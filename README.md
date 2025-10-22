@@ -1,13 +1,20 @@
-🚀 Features
+# 🛍️ TechShop API Backend
 
-Product Catalog – Browse products by category, price, or brand
+A RESTful API backend for **TechShop**, an e-commerce application built with **Express.js**, **Prisma**, and **JWT authentication**.  
+This backend handles user authentication, product management, and order logic, and is designed to integrate with a Vite-based frontend.
 
-Search & Filter – Advanced filtering and keyword search
+---
 
-Shopping Cart – Add, remove, and update items easily
+## 🚀 Tech Stack
 
-User Accounts – Login, registration, and order tracking
+- **Node.js** + **Express.js** — web server & routing  
+- **Prisma ORM** — database access layer  
+- **MySQL** — database  
+- **JWT** — authentication system  
+- **TypeScript** — static typing and structure  
+- **dotenv** — environment configuration  
+- **CORS** — secure frontend-backend communication  
+- **Session Store** (via Prisma or memory)  
+- **Vite Frontend Ready** — easy API consumption from frontend app
 
-Admin Dashboard – Manage products, orders, and users
-
-Responsive Design – Fully optimized for mobile and desktop
+---
