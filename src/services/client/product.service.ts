@@ -1,7 +1,7 @@
 import { prisma } from "../../config/client"
 
 const getProducts = async (
-    page: number,
+    page?: number,
     pageSize?: number,
     brands?: string | string[],
     targets?: string | string[],
@@ -10,89 +10,78 @@ const getProducts = async (
     inStockOnly?: string,
     sort?: string
 ) => {
+    // ---- pagination: coerce + defaults ----
+    const pageNum = Number.isFinite(page as number) && (page as number) > 0 ? Math.floor(page as number) : 1;
+    const pageSizeNum = Number.isFinite(pageSize as number) && (pageSize as number) > 0 ? Math.floor(pageSize as number) : 20;
+    const skip = (pageNum - 1) * pageSizeNum;
+    const take = pageSizeNum;
 
-    let whereClause: any = {}
+    // ---- filters ----
+    const whereClause: any = {};
+
     if (brands) {
         const brandsArray = Array.isArray(brands) ? brands : [brands];
-        whereClause.factory = { in: brandsArray }
+        if (brandsArray.length) whereClause.factory = { in: brandsArray };
     }
-
 
     if (targets) {
         const targetArray = Array.isArray(targets) ? targets : [targets];
-        whereClause.target = { in: targetArray }
+        if (targetArray.length) whereClause.target = { in: targetArray };
     }
 
-    if (priceRange) {
-        const [gt, lt] = priceRange
-        whereClause.price = {
-            gte: +gt,
-            lte: +lt,
+    if (priceRange && priceRange.length === 2) {
+        const [gt, lt] = priceRange;
+        const gte = Number(gt);
+        const lte = Number(lt);
+        if (Number.isFinite(gte) || Number.isFinite(lte)) {
+            whereClause.price = {
+                ...(Number.isFinite(gte) ? { gte } : {}),
+                ...(Number.isFinite(lte) ? { lte } : {}),
+            };
         }
     }
-    if (inStockOnly == "true") {
-        whereClause.quantity = {
-            gte: 1,
-        }
+
+    if (inStockOnly === "true") {
+        whereClause.quantity = { gte: 1 };
     }
 
     if (price) {
-        const priceInput = price.split(',')
-        const priceCondition = []
-        for (let i = 0; i < priceInput.length; i++) {
-            if (priceInput[i] === "under-1000") {
-                priceCondition.push({ "price": { "lt": 1000 } })
-            }
-            if (priceInput[i] === "1000-1500") {
-                priceCondition.push({
-                    "price":
-                        { "gte": 1000, "lte": 1500 }
-                })
-            } if (priceInput[i] === "1500-to-2000") {
-                priceCondition.push({
-                    "price": { "lt": 2000, "gte": 1500 }
-                })
-            } if (priceInput[i] === "over-2000") {
-                priceCondition.push({
-                    "price": { "gte": 2000 }
-                })
-            }
+        const priceInput = price.split(",");
+        const priceCondition: any[] = [];
+
+        for (const token of priceInput) {
+            if (token === "under-1000") priceCondition.push({ price: { lt: 1000 } });
+            if (token === "1000-1500") priceCondition.push({ price: { gte: 1000, lte: 1500 } });
+            if (token === "1500-to-2000") priceCondition.push({ price: { gte: 1500, lt: 2000 } });
+            if (token === "over-2000") priceCondition.push({ price: { gte: 2000 } });
         }
-        whereClause.OR = priceCondition
 
-    }
-
-    // build sort query
-    let orderByClause: any = {}
-
-    if (sort) {
-        if (sort === "desc") {
-            orderByClause.orderBy = {
-                price: "desc"
-            }
-        }
-        if (sort === "asc") {
-            orderByClause.orderBy = {
-                price: "asc"
-            }
+        if (priceCondition.length) {
+            whereClause.OR = priceCondition;
         }
     }
 
-    const skip = (page - 1) * pageSize
+    // ---- sort ----
+    const orderBy =
+        sort === "desc" ? { price: "desc" as const } :
+            sort === "asc" ? { price: "asc" as const } :
+                { id: "desc" as const };
+
+    // ---- query ----
     const [products, count] = await prisma.$transaction([
         prisma.product.findMany({
-            skip: skip,
-            take: pageSize,
             where: whereClause,
-            ...orderByClause
+            orderBy,           
+            skip,
+            take,
         }),
-        prisma.product.count({ where: whereClause })
-    ])
+        prisma.product.count({ where: whereClause }),
+    ]);
 
-    const totalPages = Math.ceil(count / pageSize)
+    const totalPages = Math.max(1, Math.ceil(count / pageSizeNum));
 
-    return { products, totalPages, count }
-}
+    return { products, totalPages, count };
+};
 
 const countTotalProductClientPages = async (pageSize: number) => {
     const totalItems = await prisma.product.count()
