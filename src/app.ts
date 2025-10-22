@@ -9,7 +9,7 @@ import initDatabase from './config/seed';
 const app: Express = express();
 
 const allowedOrigins = [
-    'https://tech-shop-frontend-five.vercel.app',
+    'https://techshop-alpha.vercel.app/',
     'http://localhost:5173',
 ];
 
