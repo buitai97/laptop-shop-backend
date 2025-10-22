@@ -1,19 +1,21 @@
 /// <reference path="./types/index.d.ts"/>
 import 'dotenv/config'
 import express, { Express, Request, Response } from "express";
-import session from 'express-session';
-import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import apiRoutes from './routes/api';
 import cors from 'cors'
 import path from 'path'
-import prisma from './lib/prisma';
 import initDatabase from './config/seed';
 
 
 const app: Express = express();
 
+const allowedOrigins = [
+  'https://tech-shop-frontend-five.vercel.app', // your frontend domain
+  'http://localhost:5173',                      // for local development
+];
+
 app.use(cors({
-    origin: '*',
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
