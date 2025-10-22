@@ -31,8 +31,7 @@ const postDeleteUser = async (req: Request, res: Response) => {
 }
 
 const postUpdateUser = async (req: Request, res: Response) => {
-    const { id, name, address, phone, role } = req.body;
-    const avatar = req.file?.filename ?? undefined
+    const { id, name, address, phone, role, avatar } = req.body;
     await handleUpdateUser(id, name, address, phone, role, avatar);
     return res.redirect("/admin/user")
 }

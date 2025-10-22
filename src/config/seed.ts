@@ -39,7 +39,7 @@ const initDatabase = async () => {
                         username: "taibui9747@gmail.com",
                         password: defaultPassword,
                         accountType: ACCOUNT_TYPE.SYSTEM,
-                        roleId: userRole.id,
+                        roleId: userRole!.id,
                         avatar: "snow.jpg",
                         address: "Santa Ana"
                     },

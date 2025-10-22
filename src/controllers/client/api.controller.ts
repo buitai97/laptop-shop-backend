@@ -24,7 +24,7 @@ const loginAPI = async (req: Request, res: Response) => {
         res.status(200).json({
             accessToken
         })
-    } catch (error) {
+    } catch (error: any) {
         res.status(401).json({
             data: null,
             message: error.message

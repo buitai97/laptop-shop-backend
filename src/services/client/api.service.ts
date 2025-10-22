@@ -27,7 +27,7 @@ const handleUserLogin = async (username: string, password: string) => {
     if (!user) {
         throw new Error(`Username: ${username} not found`)
     }
-    const isMatch = await comparePassword(password, user.password)
+    const isMatch = await comparePassword(password, user.password!)
     if (!isMatch) {
         throw new Error(`Invalid password`)
     }
@@ -42,7 +42,7 @@ const handleUserLogin = async (username: string, password: string) => {
     }
 
     const secret = process.env.JWT_SECRET
-    const access_token = jwt.sign(payload, secret, {
+    const access_token = jwt.sign(payload, secret!, {
         expiresIn: process.env.JWT_EXPIRE as any
     })
 

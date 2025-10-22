@@ -1,3 +1,4 @@
+import { User } from "@prisma/client"
 import { prisma } from "../../config/client"
 
 
@@ -44,13 +45,13 @@ const deleteCartItem = async (userId: number, cartDetailId: string, sumCart: num
                 userId: userId
             },
             data: {
-                sum: { decrement: cartDetail.quantity }
+                sum: { decrement: cartDetail?.quantity }
             }
         })
     }
 }
 
-const addProductToCart = async (quantity: number, productId: number, user: Express.User) => {
+const addProductToCart = async (quantity: number, productId: number, user: User) => {
     const cart = await prisma.cart.findUnique({
         where: {
             userId: user.id
@@ -89,7 +90,7 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
             },
             create: {
                 quantity: quantity,
-                price: product.price,
+                price: product?.price ?? 0,
                 productId: productId,
                 cartId: cart.id
             }
@@ -103,7 +104,7 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
                 cartDetails: {
                     create: [
                         {
-                            price: product.price,
+                            price: product?.price ?? 0,
                             quantity: quantity,
                             productId: productId
                         }
@@ -171,27 +172,27 @@ const handlePlaceOrder = async (userId: number, total: number, receiverName: str
             }
 
             //check product
-            for (let i = 0; i < cart.cartDetails.length; i++) {
-                const productId = cart.cartDetails[i].productId
+            for (let i = 0; i < cart!.cartDetails.length; i++) {
+                const productId = cart!.cartDetails[i].productId
                 const product = await tx.product.findUnique({
                     where: { id: productId }
                 })
 
-                if (!product || product.quantity < cart.cartDetails[i].quantity) {
-                    throw new Error(`Only ${product.quantity} count is available for ${product.name}`)
+                if (!product || product.quantity < cart!.cartDetails[i].quantity) {
+                    throw new Error(`Only ${product?.quantity} count is available for ${product?.name}`)
                 }
                 await tx.product.update({
                     where: { id: productId },
                     data: {
-                        quantity: { decrement: cart.cartDetails[i].quantity },
-                        sold: { increment: cart.cartDetails[i].quantity }
+                        quantity: { decrement: cart!.cartDetails[i].quantity },
+                        sold: { increment: cart!.cartDetails[i].quantity }
                     }
                 })
             }
         })
         return ""
     }
-    catch (error) { return error.message }
+    catch (error: any) { return error.message }
 }
 
 export { getCartById, findCartDetailById, deleteCartItem, handlePlaceOrder, addProductToCart, updateCartDetailBeforeCheckout }
