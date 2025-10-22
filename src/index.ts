@@ -17,6 +17,8 @@ const app: Express = express();
 
 app.use(cors({
     origin: '*',
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }))
 
@@ -52,8 +54,8 @@ configPassportLocal()
 
 // config global
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.user = req.user || null;
-  next();
+    res.locals.user = req.user || null;
+    next();
 });
 
 // decode
@@ -64,12 +66,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(process.cwd(), 'public')))
 
 app.get('/api/health', (req: Request, res: Response) => {
-  res.json({ 
-    status: 'ok', 
-    message: 'Server is running',
-    timestamp: new Date().toISOString(),
-    env: process.env.NODE_ENV 
-  });
+    res.json({
+        status: 'ok',
+        message: 'Server is running',
+        timestamp: new Date().toISOString(),
+        env: process.env.NODE_ENV
+    });
 });
 
 //config routes
@@ -79,7 +81,7 @@ apiRoutes(app)
 
 // seeding data
 if (process.env.NODE_ENV === 'development' && !process.env.VERCEL) {
-  initDatabase();
+    initDatabase();
 }
 app.use((_req: Request, res: Response) => {
     res.status(404).render('status/404.ejs');
