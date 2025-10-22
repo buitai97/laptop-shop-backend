@@ -10,7 +10,7 @@ import initDatabase from './config/seed';
 const app: Express = express();
 
 const allowedOrigins = [
-    'https://tech-shop-frontend-five.vercel.app',
+    'https://techshop-backend-4g9y.onrender.com',
     'http://localhost:5173',
 ];
 
@@ -54,7 +54,7 @@ if (process.env.NODE_ENV === 'development' && !process.env.VERCEL) {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
 
 export default app
