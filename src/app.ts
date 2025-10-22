@@ -1,6 +1,6 @@
 /// <reference path="./types/index.d.ts"/>
 import 'dotenv/config'
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import apiRoutes from './routes/api';
 import cors from 'cors'
 import path from 'path'
@@ -10,16 +10,25 @@ import initDatabase from './config/seed';
 const app: Express = express();
 
 const allowedOrigins = [
-  'https://tech-shop-frontend-five.vercel.app', // your frontend domain
-  'http://localhost:5173',                      // for local development
+    'https://tech-shop-frontend-five.vercel.app',
+    'http://localhost:5173',
 ];
 
-app.use(cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
-}))
+app.use((req: Request, res: Response, next: NextFunction) => {
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200); // ✅ Handle preflight
+    }
+
+    next();
+});
 // decode
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
