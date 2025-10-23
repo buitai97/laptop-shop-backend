@@ -4,30 +4,31 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import apiRoutes from './routes/api';
 import path from 'path'
 import initDatabase from './config/seed';
+import cors from 'cors'
 
 
 const app: Express = express();
 
 const allowedOrigins = [
-    'https://techshop-alpha.vercel.app/',
+    'https://techshop-alpha.vercel.app',
     'http://localhost:5173',
 ];
+app.use(cors())
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     const origin = req.headers.origin;
+//     if (origin && allowedOrigins.includes(origin)) {
+//         res.header('Access-Control-Allow-Origin', origin);
+//     }
+//     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//     res.header('Access-Control-Allow-Credentials', 'true');
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin);
-    }
-    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.header('Access-Control-Allow-Credentials', 'true');
+//     if (req.method === 'OPTIONS') {
+//         return res.sendStatus(200); 
+//     }
 
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200); // ✅ Handle preflight
-    }
-
-    next();
-});
+//     next();
+// });
 // decode
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
