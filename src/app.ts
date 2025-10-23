@@ -12,8 +12,14 @@ const app: Express = express();
 const allowedOrigins = [
     'https://techshop-alpha.vercel.app',
     'http://localhost:5173',
+    'https://techshop-git-main-tai-buis-projects-0c7c002a.vercel.app/',
+    'https://techshop-9cx5z4thu-tai-buis-projects-0c7c002a.vercel.app/'
+
 ];
-app.use(cors())
+app.use(cors({
+    origin: allowedOrigins,
+
+}))
 // app.use((req: Request, res: Response, next: NextFunction) => {
 //     const origin = req.headers.origin;
 //     if (origin && allowedOrigins.includes(origin)) {
