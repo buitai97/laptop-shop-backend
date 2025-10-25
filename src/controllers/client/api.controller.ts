@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { handleGetAllUsers, handleGetUserByID, handleRegisterUser, handleUserLogin } from "../../services/client/api.service";
+import { handleGetAllUsers, handleGetUserByID } from "../../services/admin/user.service";
 import { RegisterSchema, TRegisterSchema } from "../../validation/register.schema";
+import { handleRegisterUser, handleUserLogin } from "../../services/client/auth.service";
 
 const getUsersAPI = async (req: Request, res: Response) => {
     const [users, count] = await handleGetAllUsers()
@@ -16,13 +17,11 @@ const getUserByID = async (req: Request, res: Response) => {
 }
 
 const loginAPI = async (req: Request, res: Response) => {
-
-    console.log("call")
     const { username, password } = req.body
     try {
-        const accessToken = await handleUserLogin(username, password)
+        const access_token = await handleUserLogin(username, password)
         res.status(200).json({
-            accessToken
+            accessToken: access_token,
         })
     } catch (error: any) {
         res.status(401).json({
@@ -40,10 +39,10 @@ const registerAPI = async (req: Request, res: Response) => {
         return res.status(400).json({ errors });
     }
 
-    const { name, username, email, password } = req.body as TRegisterSchema
+    const { name, email, username, password } = req.body as TRegisterSchema
     try {
-        await handleRegisterUser(name, email, password, username)
-        return res.status(201).json({ message: "Register successfully!" })
+        const user = await handleRegisterUser(name, username, email, password)
+        return res.status(201).json({ user, message: "Register successfully!" })
     }
     catch (error) {
         return res.status(409).json({ error: (error as Error).message })
@@ -51,7 +50,7 @@ const registerAPI = async (req: Request, res: Response) => {
 }
 
 const fetchAccountAPI = async (req: Request, res: Response) => {
-    const user = req.user
+    const user = req.user;
     res.status(200).json({
         data: { user }
     })

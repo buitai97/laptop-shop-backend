@@ -1,4 +1,4 @@
-/// <reference path="./types/index.d.ts"/>
+/// <reference path="./types/express.d.ts"/>
 import 'dotenv/config'
 import express, { Express, NextFunction, Request, Response } from "express";
 import apiRoutes from './routes/api';
@@ -17,7 +17,8 @@ const allowedOrigins = [
 ];
 app.use(cors({
     origin: allowedOrigins,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    credentials: true,
 }))
 
 app.use(express.json())

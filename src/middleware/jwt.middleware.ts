@@ -2,23 +2,12 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
-
-interface JWTPayload {
-    id: number;
-    username: string;
-    name: string;
-    address: string;
-    email: string;
-    phone: string;
-    accountType: string;
-    avatar: string;
-    roleId: number;
-    role: any; // You can use `Role` from @prisma/client if defined
-}
+import { JwtPayload } from '../types/jwt';
 
 const whiteList: (string | RegExp)[] = [
     '/login',
     '/products',
+    '/register',
     /^\/products\/[^/]+$/
 ];
 
@@ -39,19 +28,15 @@ export const checkValidJWT = (req: Request, res: Response, next: NextFunction) =
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
 
         req.user = {
             id: decoded.id,
             username: decoded.username,
-            name: decoded.name,
-            address: decoded.address,
-            email: decoded.email,
-            phone: decoded.phone,
-            accountType: decoded.accountType,
             avatar: decoded.avatar,
-            roleId: decoded.roleId,
+            name: decoded.name,
             role: decoded.role,
+
         };
 
         next();

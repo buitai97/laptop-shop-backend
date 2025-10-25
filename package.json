@@ -7,7 +7,7 @@
     "node": ">=18 <=22"
   },
   "scripts": {
-    "dev": "tsc",
+    "dev": "nodemon",
     "build": "tsc",
     "start": "node dist/app.js"
   },

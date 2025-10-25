@@ -1,9 +1,15 @@
-import { prisma } from '../config/client'
-import { ACCOUNT_TYPE, TOTAL_ITEMS_PER_PAGE } from "../config/constant";
+import { prisma } from '../../config/client'
 import bcrypt from 'bcrypt'
 
 const saltRounds = 10;
 
+
+const handleGetAllUsers = async () => {
+    const users = await prisma.user.findMany({ omit: { password: true, phone: true, address: true, roleId: true, accountType: true }, include: { role: true } })
+    const count = await prisma.user.count()
+    return [users, count]
+
+}
 const hashPassword = async (plainText: string) => {
     return await bcrypt.hash(plainText, saltRounds)
 }
@@ -11,42 +17,16 @@ const hashPassword = async (plainText: string) => {
 const comparePassword = async (plainText: string, hashPassword: string) => {
     return await bcrypt.compare(plainText, hashPassword)
 }
-const handleCreateUser = async (
-    name: string,
-    email: string,
-    address: string,
-    phone: string,
-    role: string,
-    avatar: string) => {
-    const defaultPassword = await hashPassword("123456")
-    await prisma.user.create({
-        data: {
-            name: name,
-            email: email,
-            address: address,
-            password: defaultPassword,
-            accountType: ACCOUNT_TYPE.SYSTEM,
-            avatar: avatar,
-            phone: phone,
-            roleId: +role,
-        }
-    })
-}
 
-const getUsers = async (page: number) => {
-    const pageSize = TOTAL_ITEMS_PER_PAGE
-    const skip = (page - 1) * pageSize
-    const users = await prisma.user.findMany({
-        skip: skip,
-        take: pageSize,
-    })
-    return users
+const handleGetUserByID = async (id: string) => {
+    return await prisma.user.findUnique({ where: { id: +id }, include: { role: { select: { name: true } } } })
 }
 
 const handleDeleteUser = async (id: string) => {
     const result = await prisma.user.delete({ where: { id: +id } })
     return result
 }
+
 const handleUpdateUser = async (
     id: number,
     name: string,
@@ -67,7 +47,7 @@ const handleUpdateUser = async (
     return updatedUser
 }
 
-const getUserById = async (id: string) => {
+const handleGetUserById = async (id: string) => {
     const user = prisma.user.findUnique({
         where: {
             id: +id
@@ -92,7 +72,7 @@ const handleGetRoles = async () => {
 }
 
 export {
-    handleCreateUser, handleGetRoleDetail, getUsers, handleUpdateUser,
-    handleDeleteUser, getUserById, hashPassword, handleGetRoles,
-    comparePassword
+    handleGetRoleDetail, handleUpdateUser,
+    handleDeleteUser, handleGetUserById, hashPassword, handleGetRoles,
+    comparePassword, handleGetAllUsers, handleGetUserByID
 }
