@@ -18,3 +18,6 @@ This backend handles user authentication, product management, and order logic, a
 - **Vite Frontend Ready** — easy API consumption from frontend app
 
 ---
+
+## Demo 
+https://techshop-alpha.vercel.app/
