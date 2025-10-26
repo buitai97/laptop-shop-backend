@@ -1,5 +1,5 @@
-import { isEmailExist } from '../services/client/auth.service'
 import { z } from 'zod'
+import { isEmailExist } from '../services/users.service'
 
 
 const EmailSchema =

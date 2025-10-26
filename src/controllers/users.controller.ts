@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { handleGetAllUsers, handleGetUserByID } from "../../services/admin/user.service";
-import { RegisterSchema, TRegisterSchema } from "../../validation/register.schema";
-import { handleRegisterUser, handleUserLogin } from "../../services/client/auth.service";
+import { handleDeleteUser, handleGetAllUsers, handleGetUserByID } from "../services/users.service";
+import { RegisterSchema, TRegisterSchema } from "../validation/register.schema";
+import { handleRegisterUser, handleUserLogin } from "../services/users.service";
 
 const getUsersAPI = async (req: Request, res: Response) => {
     const [users, count] = await handleGetAllUsers()
@@ -57,4 +57,11 @@ const fetchAccountAPI = async (req: Request, res: Response) => {
 }
 
 
-export { getUsersAPI, getUserByID, loginAPI, fetchAccountAPI, registerAPI } 
+const postDeleteUser = async (req: Request, res: Response) => {
+    await handleDeleteUser(req.params.id);
+    return res.json({ message: "User deleted successfully" });
+}
+
+
+
+export { getUsersAPI, getUserByID, loginAPI, fetchAccountAPI, registerAPI, postDeleteUser } 

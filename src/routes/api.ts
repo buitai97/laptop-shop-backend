@@ -1,8 +1,8 @@
 import express, { Express } from 'express'
-import { fetchAccountAPI, getUserByID, getUsersAPI, loginAPI, registerAPI } from '../controllers/client/api.controller'
-import { getProductByIdAPI, getProductsAPI } from '../controllers/client/product.controller'
+import { fetchAccountAPI, getUserByID, getUsersAPI, loginAPI, registerAPI } from '../controllers/users.controller'
+import { getProductByIdAPI, getProductsAPI } from '../controllers/product.controller'
 import { checkValidJWT } from '../middleware/jwt.middleware'
-import { postDeleteUser } from '../controllers/admin/user.controller'
+import { postDeleteUser } from '../controllers/users.controller'
 
 const router = express.Router()
 
@@ -21,6 +21,8 @@ const apiRoutes = (app: Express) => {
     router.get("/products", getProductsAPI)
     router.get("/products/:id", getProductByIdAPI)
     app.use("/api", checkValidJWT, router)
+
+    // orders
 }
 
 

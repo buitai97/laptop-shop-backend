@@ -1,5 +1,5 @@
 import { prisma } from "../config/client";
-import { hashPassword } from "../services/admin/user.service";
+import { hashPassword } from "../services/users.service";
 import { ACCOUNT_TYPE } from "../config/constant";
 
 
