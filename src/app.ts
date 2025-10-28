@@ -12,6 +12,7 @@ const app: Express = express();
 const allowedOrigins = [
     'https://techshop-alpha.vercel.app',
     'http://localhost:5173',
+    'http://localhost:4173',
     'https://techshop-git-main-tai-buis-projects-0c7c002a.vercel.app/',
     'https://techshop-9cx5z4thu-tai-buis-projects-0c7c002a.vercel.app/',
 ];

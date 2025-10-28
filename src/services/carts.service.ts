@@ -3,7 +3,7 @@ import { prisma } from "../config/client"
 const getCartById = async (id: number) => {
     const cart = await prisma.cart.findUnique({
         where: { userId: id },
-        include: { cartItems: { include: { product: true } } }
+        include: { cartItems: { include: { product: true }, omit: { cartId: true, productId: true } } },
     })
     return cart
 
@@ -74,7 +74,7 @@ const addToCart = async (userId: number, productId: number, quantity: number) =>
 }
 
 const updateCart = async (cartItemId: number, quantity: number) => {
-        if (quantity === 0) {
+    if (quantity === 0) {
         await prisma.cartItem.delete({
             where: { id: cartItemId }
         })
