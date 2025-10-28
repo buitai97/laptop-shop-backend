@@ -22,7 +22,15 @@ const comparePassword = async (plainText: string, hashPassword: string) => {
 }
 
 const handleGetUserByID = async (id: string) => {
-    return await prisma.user.findUnique({ where: { id: +id }, include: { role: { select: { name: true } } } })
+    return await prisma.user.findUnique({
+        where: { id: +id },
+        include: {
+            role:
+                { select: { name: true } },
+            cart: true
+        },
+        omit: { password: true }
+    })
 }
 
 const handleDeleteUser = async (id: string) => {
@@ -112,14 +120,6 @@ const isEmailExist = async (email: string) => {
     return false
 }
 
-const getUserCartSum = async (id: string) => {
-    const user = await prisma.cart.findUnique({
-        where: {
-            userId: +id
-        },
-    })
-    return user?.sum ?? 0
-}
 
 const handleRegisterUser = async (name: string, username: string, email: string, password: string) => {
     const hashedPassword = await hashPassword(password)
@@ -129,6 +129,6 @@ const handleRegisterUser = async (name: string, username: string, email: string,
 export {
     handleGetRoleDetail, handleUpdateUser,
     handleDeleteUser, handleGetUserById, hashPassword, handleGetRoles,
-    comparePassword, handleGetAllUsers, handleGetUserByID, handleUserLogin, isEmailExist, getUserCartSum, handleRegisterUser,
+    comparePassword, handleGetAllUsers, handleGetUserByID, handleUserLogin, isEmailExist, handleRegisterUser,
     getRoles
 }

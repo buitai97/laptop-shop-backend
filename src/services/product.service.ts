@@ -1,53 +1,35 @@
+import { Product } from "@prisma/client"
 import { prisma } from "../config/client"
 import { TOTAL_ITEMS_PER_PAGE } from "../config/constant"
 
-const createProduct = async (
-    detailDesc: string,
-    factory: string,
-    name: string,
-    price: number,
-    quantity: number,
-    shortDesc: string,
-    target: string,
-    image: string
-) => {
-
+const createProduct = async (productData: Product) => {
     await prisma.product.create({
         data: {
-            detailDesc,
-            factory,
-            name,
-            price,
-            quantity,
-            shortDesc,
-            target,
-            image
+            detailDesc: productData.detailDesc,
+            brand: productData.brand,
+            name: productData.name,
+            price: productData.price,
+            quantity: productData.quantity,
+            shortDesc: productData.shortDesc,
+            category: productData.category,
+            image: productData.image
         }
     })
 
 }
 
-const updateProduct = async (
-    id: number,
-    detailDesc: string,
-    factory: string,
-    name: string,
-    price: number,
-    quantity: number,
-    shortDesc: string,
-    target: string,
-    image: string) => {
+const updateProduct = async (id: number, productData: Product) => {
     await prisma.product.update({
         where: { id: id },
         data: {
-            detailDesc,
-            factory,
-            name,
-            price,
-            quantity,
-            shortDesc,
-            target,
-            image
+            detailDesc: productData.detailDesc,
+            brand: productData.brand,
+            name: productData.name,
+            price: productData.price,
+            quantity: productData.quantity,
+            shortDesc: productData.shortDesc,
+            category: productData.category,
+            image: productData.image
         }
     })
 }
@@ -73,7 +55,7 @@ const getProducts = async (
     page?: number,
     pageSize?: number,
     brands?: string | string[],
-    targets?: string | string[],
+    categories?: string | string[],
     price?: string,
     priceRange?: string[],
     inStockOnly?: string,
@@ -90,12 +72,12 @@ const getProducts = async (
 
     if (brands) {
         const brandsArray = Array.isArray(brands) ? brands : [brands];
-        if (brandsArray.length) whereClause.factory = { in: brandsArray };
+        if (brandsArray.length) whereClause.brand = { in: brandsArray };
     }
 
-    if (targets) {
-        const targetArray = Array.isArray(targets) ? targets : [targets];
-        if (targetArray.length) whereClause.target = { in: targetArray };
+    if (categories) {
+        const categoryArray = Array.isArray(categories) ? categories : [categories];
+        if (categoryArray.length) whereClause.category = { in: categoryArray };
     }
 
     if (priceRange && priceRange.length === 2) {

@@ -8,14 +8,6 @@ const getUsersAPI = async (req: Request, res: Response) => {
     return res.status(200).json({ users, count })
 }
 
-const getUserByID = async (req: Request, res: Response) => {
-    const { id } = req.params
-    const user = await handleGetUserByID(id)
-    res.status(200).json({
-        data: user
-    })
-}
-
 const loginAPI = async (req: Request, res: Response) => {
     const { username, password } = req.body
     try {
@@ -50,7 +42,7 @@ const registerAPI = async (req: Request, res: Response) => {
 }
 
 const fetchAccountAPI = async (req: Request, res: Response) => {
-    const user = req.user;
+    const user = await handleGetUserByID(req.user!.id.toString());
     res.status(200).json({
         data: { user }
     })
@@ -64,4 +56,4 @@ const postDeleteUser = async (req: Request, res: Response) => {
 
 
 
-export { getUsersAPI, getUserByID, loginAPI, fetchAccountAPI, registerAPI, postDeleteUser } 
+export { getUsersAPI, loginAPI, fetchAccountAPI, registerAPI, postDeleteUser } 

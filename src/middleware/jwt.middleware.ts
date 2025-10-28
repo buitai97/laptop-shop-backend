@@ -36,7 +36,6 @@ export const checkValidJWT = (req: Request, res: Response, next: NextFunction) =
             avatar: decoded.avatar,
             name: decoded.name,
             role: decoded.role,
-
         };
 
         next();

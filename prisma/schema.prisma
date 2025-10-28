@@ -5,125 +5,114 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  name        String? @db.VarChar(255)
-  email       String? @db.VarChar(255)
-  address     String? @db.VarChar(255)
-  username    String? @unique @db.VarChar(255)
-  password    String? @db.VarChar(255)
-  phone       String? @db.VarChar(255)
-  accountType String  @db.VarChar(50)
-  avatar      String? @db.VarChar(255)
+    id          Int     @id @default(autoincrement())
+    name        String? @db.VarChar(255)
+    email       String? @db.VarChar(255)
+    address     String? @db.VarChar(255)
+    username    String? @unique @db.VarChar(255)
+    password    String? @db.VarChar(255)
+    phone       String? @db.VarChar(255)
+    accountType String  @db.VarChar(50)
+    avatar      String? @db.VarChar(255)
 
-  role   Role    @relation(fields: [roleId], references: [id])
-  roleId Int
-  cart   Cart?
-  order  Order[]
+    role   Role    @relation(fields: [roleId], references: [id])
+    roleId Int
+    cart   Cart?
+    cartId Int?
+    order  Order[]
 
-  @@map("users")
+    @@map("users")
 }
 
 model Role {
-  id          Int    @id @default(autoincrement())
-  name        String @unique @db.VarChar(255)
-  description String @db.VarChar(255)
+    id          Int    @id @default(autoincrement())
+    name        String @unique @db.VarChar(255)
+    description String @db.VarChar(255)
 
-  users User[]
+    users User[]
 
-  @@map("roles")
+    @@map("roles")
 }
 
 model Order {
-  id              Int      @id @default(autoincrement())
-  totalPrice      Float?
-  receiverAddress String   @db.VarChar(255)
-  receiverName    String   @db.VarChar(255)
-  receiverPhone   String   @db.VarChar(255)
-  date            DateTime @default(now())
-  status          String   @default("PENDING")
+    id              Int      @id @default(autoincrement())
+    totalPrice      Float?
+    receiverAddress String   @db.VarChar(255)
+    receiverName    String   @db.VarChar(255)
+    receiverPhone   String   @db.VarChar(255)
+    date            DateTime @default(now())
+    status          String   @default("PENDING")
 
-  paymentMethod String
-  paymentStatus String
-  paymentRef    String?
+    paymentMethod String
+    paymentStatus String
+    paymentRef    String?
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+    user   User @relation(fields: [userId], references: [id])
+    userId Int
 
-  orderDetails OrderDetail[]
+    orderDetails OrderDetail[]
 
-  @@map("orders")
+    @@map("orders")
 }
 
 model OrderDetail {
-  id       Int @id @default(autoincrement())
-  price    Int
-  quantity Int
+    id       Int @id @default(autoincrement())
+    price    Int
+    quantity Int
 
-  order   Order @relation(fields: [orderId], references: [id])
-  orderId Int
+    order   Order @relation(fields: [orderId], references: [id])
+    orderId Int
 
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int     
+    product   Product @relation(fields: [productId], references: [id])
+    productId Int
 
-  @@map("order_detail")
+    @@map("order_detail")
 }
 
 model Product {
-  id         Int     @id @default(autoincrement())
-  name       String  @db.VarChar(255)
-  price      Float
-  image      String? @db.VarChar(255)
-  detailDesc String  @db.Text
-  shortDesc  String  @db.VarChar(255)
-  quantity   Int
-  sold       Int?
-  factory    String  @db.VarChar(255)
-  target     String  @db.VarChar(255)
+    id         Int     @id @default(autoincrement())
+    name       String  @db.VarChar(255)
+    price      Float
+    image      String? @db.VarChar(255)
+    detailDesc String  @db.Text
+    shortDesc  String  @db.VarChar(255)
+    quantity   Int
+    sold       Int?
+    brand      String  @default("Unknown") @db.VarChar(255)
+    category   String  @default("General") @db.VarChar(255)
 
-  CartDetail  CartDetail[]
-  OrderDetail OrderDetail[]
+    cartItems   CartItem?
+    orderDetail OrderDetail[]
 
-  @@map("products")
-}
-
-model Session {
-  id        String   @id
-  sid       String   @unique
-  data      String   @db.MediumText
-  expiresAt DateTime
-
-  @@map("sessions")
+    @@map("products")
 }
 
 model Cart {
-  id          Int          @id @default(autoincrement())
-  user        User         @relation(fields: [userId], references: [id])
-  userId      Int          @unique
-  sum         Int
-  cartDetails CartDetail[]
+    id        Int        @id @default(autoincrement())
+    userId    Int        @unique
+    cartItems CartItem[]
+    user      User       @relation(fields: [userId], references: [id])
 
-  @@map("carts")
+    @@map("carts")
 }
 
-model CartDetail {
-  id       Int   @id @default(autoincrement())
-  quantity Int
-  price    Float
+model CartItem {
+    id        Int     @id @default(autoincrement())
+    quantity  Int     @default(1)
+    productId Int     @unique
+    product   Product @relation(fields: [productId], references: [id])
+    cartId    Int
+    cart      Cart    @relation(fields: [cartId], references: [id])
 
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int
-
-  cart   Cart @relation(fields: [cartId], references: [id])
-  cartId Int
-
-  @@map("cart_details")
+    @@unique([cartId, productId])
+    @@map("cart_items")
 }

@@ -1,0 +1,90 @@
+import { prisma } from "../config/client"
+
+const getCartById = async (id: number) => {
+    const cart = await prisma.cart.findUnique({
+        where: { userId: id },
+        include: { cartItems: { include: { product: true } } }
+    })
+    return cart
+
+}
+
+const getUserCartSum = async (id: string) => {
+    const cart = await prisma.cart.findUnique({
+        where: {
+            userId: +id
+        },
+        include: { cartItems: true }
+    })
+    const sum = cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0)
+    return sum ?? 0
+}
+
+const addToCart = async (userId: number, productId: number, quantity: number) => {
+    let cart = await prisma.cart.findUnique({
+        where: {
+            userId
+        }
+    })
+
+    if (!cart) {
+        cart = await prisma.cart.create({
+            data: {
+                userId,
+                cartItems: {
+                    create: {
+                        productId,
+                        quantity,
+                    }
+                }
+            }
+        })
+    } else {
+        const cartItem = await prisma.cartItem.findUnique({
+            where: {
+                cartId_productId: {
+                    cartId: cart.id,
+                    productId
+                }
+            }
+        })
+
+        if (cartItem) {
+            cartItem.quantity += quantity
+            await prisma.cartItem.update({
+                where: {
+                    id: cartItem.id
+                },
+                data: {
+                    quantity: cartItem.quantity
+                }
+            })
+        } else {
+            await prisma.cartItem.create({
+                data: {
+                    cartId: cart.id,
+                    productId,
+                    quantity
+                }
+            })
+        }
+    }
+
+    return cart
+}
+
+const updateCart = async (cartItemId: number, quantity: number) => {
+        if (quantity === 0) {
+        await prisma.cartItem.delete({
+            where: { id: cartItemId }
+        })
+    }
+    else {
+        await prisma.cartItem.update({
+            where: { id: cartItemId },
+            data: { quantity }
+        })
+    }
+}
+
+export { getCartById, getUserCartSum, addToCart, updateCart }

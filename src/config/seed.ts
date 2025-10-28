@@ -68,8 +68,8 @@ SWIFT MEMORY AND STORAGE – Multitask faster with 16GB of DDR5-4800MHz memory a
 NEVER MISS A MOMENT – Keep up with the pros thanks to its fast FHD 144Hz display with 100% sRGB color. Adaptive sync tech reduces lag, minimizes stuttering, and eliminates visual tearing for ultra-smooth and lifelike gameplay.`,
                 shortDesc: " Intel, Core i5, 11400H",
                 quantity: 100,
-                factory: "ASUS",
-                target: "GAMING",
+                brand: "ASUS",
+                category: "GAMING",
                 image: "1711078092373-asus-01.png"
             },
             {
@@ -79,8 +79,8 @@ NEVER MISS A MOMENT – Keep up with the pros thanks to its fast FHD 144Hz displ
 Benefit from roomy keycaps and a spacious touchpad that makes it easier to navigate your content and ComfortView software, which is a TUV Rheinland certified solution, reduces harmful blue light emissions to keep your eyes comfortable over extended viewing times. Also, sleek three-side narrow borders encase a FHD display.`,
                 shortDesc: "i5 1235U/16GB/512GB/15.6\"FHD",
                 quantity: 200,
-                factory: "DELL",
-                target: "OFFICE",
+                brand: "DELL",
+                category: "OFFICE",
                 image: "1711078452562-dell-01.png"
             },
             {
@@ -89,8 +89,8 @@ Benefit from roomy keycaps and a spacious touchpad that makes it easier to navig
                 detailDesc: `The IdeaPad 3 is priced as an everyday-use laptop—but engineered as something much more. Premium Intel® processing—as well as powerful memory and storage options—means this PC delivers beyond expectations. Bonus: The numeric keypad will speed up your productivity, whether you’re working on your personal budget or preparing a spreadsheet`,
                 shortDesc: " i5-10300H, RAM 8G",
                 quantity: 150,
-                factory: "LENOVO",
-                target: "GAMING",
+                brand: "LENOVO",
+                category: "GAMING",
                 image: "1711079073759-lenovo-01.png"
             },
             {
@@ -99,8 +99,8 @@ Benefit from roomy keycaps and a spacious touchpad that makes it easier to navig
                 detailDesc: `14 inches 1920 x 1080 (Full HD) Anti-glare Three-Sided NanoEdge Design.`,
                 shortDesc: "VGA NVIDIA GTX 950M- 4G",
                 quantity: 99,
-                factory: "ASUS",
-                target: "GRAPHIC",
+                brand: "ASUS",
+                category: "GRAPHIC",
                 image: "1711079496409-asus-02.png"
             },
             {
@@ -109,8 +109,8 @@ Benefit from roomy keycaps and a spacious touchpad that makes it easier to navig
                 detailDesc: `Remarkably light and less than half an inch thin, MacBook Air fits easily into your on-the-go lifestyle — and your bag. MacBook Air with M4 is made with over 50 percent recycled materials and has a durable recycled aluminum enclosure.`,
                 shortDesc: "Apple M1 GPU 7 cores",
                 quantity: 99,
-                factory: "APPLE",
-                target: "GAMING",
+                brand: "APPLE",
+                category: "GAMING",
                 image: "1711079954090-apple-01.png"
             },
             {
@@ -119,8 +119,8 @@ Benefit from roomy keycaps and a spacious touchpad that makes it easier to navig
                 detailDesc: `LG gram delivers powerhouse AI performance in an ultra-thin, ultra-light design. Weighing just 3.2 lbs., the sleek 17” anti-glare touch display is built for productivity anywhere. With an Intel¹ Evo Edition Core Ultra 7 processor, for AI intensive workloads, the laptop provides performance, boosts efficiency, and fuel AI productivity.`,
                 shortDesc: "Intel Iris Plus Graphics",
                 quantity: 99,
-                factory: "LG",
-                target: "OFFICE",
+                brand: "LG",
+                category: "OFFICE",
                 image: "1711080386941-lg-01.png"
             },
             {
@@ -130,8 +130,8 @@ Benefit from roomy keycaps and a spacious touchpad that makes it easier to navig
 
                 shortDesc: "Apple M2 GPU 8 cores",
                 quantity: 99,
-                factory: "APPLE",
-                target: "COMPACT",
+                brand: "APPLE",
+                category: "COMPACT",
                 image: "1711080787179-apple-02.png"
             },
             {
@@ -140,8 +140,8 @@ Benefit from roomy keycaps and a spacious touchpad that makes it easier to navig
                 detailDesc: `Remarkably light and less than half an inch thin, MacBook Air fits easily into your on-the-go lifestyle — and your bag. MacBook Air with M4 is made with over 50 percent recycled materials and has a durable recycled aluminum enclosure.`,
                 shortDesc: "AN515-58-769J i7 12700H",
                 quantity: 99,
-                factory: "ACER",
-                target: "OFFICE",
+                brand: "ACER",
+                category: "OFFICE",
                 image: "1711080948771-acer-01.png"
             },
             {
@@ -152,8 +152,8 @@ The 15.6-inch Full HD IPS display, enhanced with Acer BluelightShield and ComfyV
 Connectivity is never an issue with the Acer Nitro V 15, featuring a range of ports including HDMI, USB-C 3.2 Gen 2/Thunderbolt 4/DisplayPort, and USB 3.2 Gen 1, catering to all your peripheral needs. The notebook's robust design, combining ABS plastic and polycarbonate materials, is both sleek and durable, ready to withstand the rigors of daily use while keeping your device secure with a Kensington security slot. Dual microphones and stereo speakers round out the package, offering a superior audio experience for gaming, movies, and video conferencing.`,
                 shortDesc: "NVIDIA GeForce RTX 4050",
                 quantity: 99,
-                factory: "ASUS",
-                target: "COMPACT",
+                brand: "ASUS",
+                category: "COMPACT",
                 image: "1711081080930-asus-03.png"
             },
             {
@@ -163,8 +163,8 @@ Connectivity is never an issue with the Acer Nitro V 15, featuring a range of po
 `,
                 shortDesc: "Intel Iris Xe Graphics",
                 quantity: 99,
-                factory: "DELL",
-                target: "COMPACT",
+                brand: "DELL",
+                category: "COMPACT",
                 image: "1711081278418-dell-02.png",
 
             }
