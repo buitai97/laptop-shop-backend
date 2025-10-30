@@ -1,6 +1,7 @@
 import { prisma } from "../config/client";
 import { hashPassword } from "../services/users.service";
 import { ACCOUNT_TYPE } from "../config/constant";
+import { Address } from "cluster";
 
 
 const initDatabase = async () => {
@@ -41,7 +42,6 @@ const initDatabase = async () => {
                         accountType: ACCOUNT_TYPE.SYSTEM,
                         roleId: userRole!.id,
                         avatar: "snow.jpg",
-                        address: "Santa Ana"
                     },
                     {
                         name: "Admin",
@@ -50,7 +50,6 @@ const initDatabase = async () => {
                         accountType: ACCOUNT_TYPE.SYSTEM,
                         roleId: adminRole.id,
                         avatar: "snow.jpg",
-                        address: "Santa Ana"
                     },
                 ]
             })

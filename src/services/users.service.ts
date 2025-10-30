@@ -8,7 +8,7 @@ const saltRounds = 10;
 
 
 const handleGetAllUsers = async () => {
-    const users = await prisma.user.findMany({ omit: { password: true, phone: true, address: true, roleId: true, accountType: true }, include: { role: true } })
+    const users = await prisma.user.findMany({ omit: { password: true, phone: true, addressId: true, roleId: true, accountType: true }, include: { role: true } })
     const count = await prisma.user.count()
     return [users, count]
 
@@ -36,26 +36,6 @@ const handleGetUserByID = async (id: string) => {
 const handleDeleteUser = async (id: string) => {
     const result = await prisma.user.delete({ where: { id: +id } })
     return result
-}
-
-const handleUpdateUser = async (
-    id: number,
-    name: string,
-    address: string,
-    phone: string,
-    role: string,
-    avatar: string) => {
-    const updatedUser = await prisma.user.update({
-        where: { id: +id },
-        data: {
-            name: name,
-            address: address,
-            phone: phone,
-            roleId: +role,
-            ...(avatar !== undefined && { avatar: avatar }),
-        }
-    })
-    return updatedUser
 }
 
 const handleGetUserById = async (id: string) => {
@@ -127,7 +107,7 @@ const handleRegisterUser = async (name: string, username: string, email: string,
 }
 
 export {
-    handleGetRoleDetail, handleUpdateUser,
+    handleGetRoleDetail,
     handleDeleteUser, handleGetUserById, hashPassword, handleGetRoles,
     comparePassword, handleGetAllUsers, handleGetUserByID, handleUserLogin, isEmailExist, handleRegisterUser,
     getRoles
